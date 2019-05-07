@@ -1,3 +1,4 @@
+import 'package:camp_2019/amount.dart';
 import 'package:flutter/material.dart';
 
 class OrderPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class OrderPage extends StatefulWidget {
 
 class OrderPageState extends State<OrderPage> {
   Flavours _selectedFlavour;
+  final _formKey = GlobalKey<FormState>();
 
   RadioListTile<Flavours> createFlavourRadioButton(Flavours flavourValue) {
     var flavourString = flavourValue.toString();
@@ -34,19 +36,32 @@ class OrderPageState extends State<OrderPage> {
           title: Text('Order Popcorn'),
         ),
         body: Padding(
-          child: new Column(
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Amount (in g)'),
-              ),
-              Text('Flavour:'),
-              createFlavourRadioButton(Flavours.Salty),
-              createFlavourRadioButton(Flavours.Sweet),
-              createFlavourRadioButton(Flavours.Caramel),
-              createFlavourRadioButton(Flavours.Wasabi),
-            ],
-          ),
           padding: EdgeInsets.all(5),
+          child: Form(
+            autovalidate: true,
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Amount (in g)'),
+                  keyboardType: TextInputType.number,
+                  validator: (String text) {
+                    var num = int.tryParse(text);
+                    if (num == null || Amount.isValid(num)) {
+                      return null;
+                    }
+
+                    return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
+                  },
+                ),
+                Text('Flavour:'),
+                createFlavourRadioButton(Flavours.Salty),
+                createFlavourRadioButton(Flavours.Sweet),
+                createFlavourRadioButton(Flavours.Caramel),
+                createFlavourRadioButton(Flavours.Wasabi),
+              ],
+            ),
+          ),
         ));
   }
 }
