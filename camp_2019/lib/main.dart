@@ -1,3 +1,4 @@
+import 'package:camp_2019/order_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -32,31 +33,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(title: Text(widget.title)),
         body: Center(
-          child: Column(
-            children: [
-              RaisedButton(
-                child: Text("Spike"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("Main"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("Order"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("OrderDetails"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
+          child: Column(children: [
+            RaisedButton(
+              child: Text("Spike"),
+              onPressed: () => {setState(() => {})},
+            ),
+            RaisedButton(
+              child: Text("Main"),
+              onPressed: () => {setState(() => {})},
+            ),
+            RaisedButton(
+              child: Text("Order"),
+              onPressed: () => {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => OrderPage()))
+                  },
+            ),
+            RaisedButton(
+              child: Text("OrderDetails"),
+              onPressed: () => {setState(() => {})},
+            ),
+            RaisedButton(
               child: Text("Settings"),
               onPressed: () => {setState(() => {})},
-              ),
-          ]
-        ),
-    )
-    );
+            ),
+          ]),
+        ));
   }
 }
