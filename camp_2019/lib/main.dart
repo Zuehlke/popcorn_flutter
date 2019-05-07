@@ -32,10 +32,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(title: Text(widget.title)),
         body: Center(
-          child: RaisedButton(
-            child: Text("I don't do anything"),
-            onPressed: () => {setState(() => {})},
-          ),
-        ));
+          child: Column(
+            children: [
+              RaisedButton(
+                child: Text("Spike"),
+                onPressed: () => {setState(() => {})},
+              ),
+              RaisedButton(
+                child: Text("Main"),
+                onPressed: () => {setState(() => {})},
+              ),
+              RaisedButton(
+                child: Text("Order"),
+                onPressed: () => {setState(() => {})},
+              ),
+              RaisedButton(
+                child: Text("OrderDetails"),
+                onPressed: () => {setState(() => {})},
+              ),
+              RaisedButton(
+              child: Text("Settings"),
+              onPressed: () => {setState(() => {})},
+              ),
+          ]
+        ),
+    )
+    );
   }
 }
