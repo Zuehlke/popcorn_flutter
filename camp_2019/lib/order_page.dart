@@ -10,14 +10,14 @@ class OrderPage extends StatefulWidget {
 }
 
 class OrderPageState extends State<OrderPage> {
-  Flavours _selectedFlavour;
+  Flavours _selectedFlavour = Flavours.Salty;
   final _formKey = GlobalKey<FormState>();
 
   RadioListTile<Flavours> createFlavourRadioButton(Flavours flavourValue) {
     var flavourString = flavourValue.toString();
     flavourString = flavourString.substring(flavourString.indexOf('.') + 1);
 
-    return RadioListTile<Flavours>(
+    var result = RadioListTile<Flavours>(
       title: Text(flavourString),
       value: flavourValue,
       groupValue: _selectedFlavour,
@@ -27,6 +27,8 @@ class OrderPageState extends State<OrderPage> {
         });
       },
     );
+
+    return result;
   }
 
   @override
@@ -36,7 +38,7 @@ class OrderPageState extends State<OrderPage> {
           title: Text('Order Popcorn'),
         ),
         body: Padding(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(15),
           child: Form(
             autovalidate: true,
             key: _formKey,
@@ -54,11 +56,28 @@ class OrderPageState extends State<OrderPage> {
                     return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
                   },
                 ),
-                Text('Flavour:'),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Flavours:"),
+                  ),
+                ),
                 createFlavourRadioButton(Flavours.Salty),
                 createFlavourRadioButton(Flavours.Sweet),
                 createFlavourRadioButton(Flavours.Caramel),
                 createFlavourRadioButton(Flavours.Wasabi),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RaisedButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {}
+                    },
+                    child: Text('Submit'),
+                  ),
+                ),
               ],
             ),
           ),
