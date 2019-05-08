@@ -10,8 +10,21 @@ class OrderDetailsPage extends StatefulWidget {
 }
 
 class OrderDetailsPageState extends State<OrderDetailsPage> {
-  var _order =
-      new Order('Hans', 5, Flavours.Sweet, Status.In_Progress, DateTime.now());
+  Order _order;
+  List<OrderDetailsItem> _items;
+
+  OrderDetailsPageState() {
+    _order =
+    new Order('Hans', 5, Flavours.Sweet, Status.In_Progress, DateTime.now());
+
+    _items = [
+      new OrderDetailsItem("Name", _order.userName),
+      new OrderDetailsItem("Amount (g)", _order.amount.toString()),
+      new OrderDetailsItem("Falvour", _order.flavour.toString()),
+      new OrderDetailsItem("Status", _order.status.toString()),
+      new OrderDetailsItem("Pickup Time", _order.pickupTime.toString()),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +34,23 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
           title: Text('Order Popcorn'),
         ),
         body: ListView.separated(
-          itemCount: 5,
+          itemCount: _items.length,
           separatorBuilder: (BuildContext context, int index) => Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Text('item $index'),
+              leading: Text('${_items[index].name}'),
+              trailing: Text('${_items[index].value}'),
             );
           },
         ));
   }
+}
+
+class OrderDetailsItem {
+  String name;
+  String value;
+
+  OrderDetailsItem(this.value, this.name);
 }
 
 class Order {
