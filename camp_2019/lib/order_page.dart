@@ -72,16 +72,18 @@ class OrderPageState extends State<OrderPage> {
                 inputType: InputType.both,
                 decoration: InputDecoration(hintText: "PickupTime"),
               ),
-              Align(
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
                 child: SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
+                    padding: EdgeInsets.all(15),
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {}
                     },
-                    child: Text('Submit'),
+                    child: Text('Submit Order'),
                   ),
                 ),
               ),
