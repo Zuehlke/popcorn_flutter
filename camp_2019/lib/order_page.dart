@@ -1,5 +1,7 @@
 import 'package:camp_2019/amount.dart';
 import 'package:flutter/material.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -42,43 +44,50 @@ class OrderPageState extends State<OrderPage> {
           child: Form(
             autovalidate: true,
             key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Amount (in g)'),
-                  keyboardType: TextInputType.number,
-                  validator: (String text) {
-                    var num = int.tryParse(text);
-                    if (num == null || Amount.isValid(num)) {
-                      return null;
-                    }
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Amount (in g)'),
+                    keyboardType: TextInputType.number,
+                    validator: (String text) {
+                      var num = int.tryParse(text);
+                      if (num == null || Amount.isValid(num)) {
+                        return null;
+                      }
 
-                    return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Flavours:"),
-                  ),
-                ),
-                createFlavourRadioButton(Flavours.Salty),
-                createFlavourRadioButton(Flavours.Sweet),
-                createFlavourRadioButton(Flavours.Caramel),
-                createFlavourRadioButton(Flavours.Wasabi),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: RaisedButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {}
+                      return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
                     },
-                    child: Text('Submit'),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Flavours:"),
+                    ),
+                  ),
+                  createFlavourRadioButton(Flavours.Salty),
+                  createFlavourRadioButton(Flavours.Sweet),
+                  createFlavourRadioButton(Flavours.Caramel),
+                  createFlavourRadioButton(Flavours.Wasabi),
+                  DateTimePickerFormField(
+                    format: DateFormat("dd.MM.yyyy HH:mm"),
+                    inputType: InputType.both,
+                    decoration: InputDecoration(hintText: "PickupTime"),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {}
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ));
