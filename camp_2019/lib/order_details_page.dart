@@ -1,3 +1,6 @@
+import 'package:camp_2019/models/flavours.dart';
+import 'package:camp_2019/models/order.dart';
+import 'package:camp_2019/models/order_status.dart';
 import 'package:camp_2019/order_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +20,7 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
 
   OrderDetailsPageState() {
     _order =
-        new Order('Hans', 5, Flavours.Sweet, Status.InProgress, DateTime.now());
+        new Order('Hans', 5, Flavours.Sweet, OrderStatus.InProgress, DateTime.now());
 
     _items = [
       new OrderDetailsItem("Name", _order.userName),
@@ -82,15 +85,3 @@ class OrderDetailsItem {
 
   OrderDetailsItem(this.value, this.name);
 }
-
-class Order {
-  Order(this.userName, this.amount, this.flavour, this.status, this.pickupTime);
-
-  String userName;
-  int amount;
-  Flavours flavour;
-  Status status;
-  DateTime pickupTime;
-}
-
-enum Status { InQueue, InProgress }

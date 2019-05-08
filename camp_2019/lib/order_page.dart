@@ -1,4 +1,5 @@
-import 'package:camp_2019/amount.dart';
+import 'package:camp_2019/models/amount.dart';
+import 'package:camp_2019/models/flavours.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -94,5 +95,3 @@ class OrderPageState extends State<OrderPage> {
     );
   }
 }
-
-enum Flavours { Salty, Sweet, Caramel, Wasabi }
