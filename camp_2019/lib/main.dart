@@ -49,7 +49,9 @@ class _MainPageState extends State<MainPage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () {},
+              onPressed: () =>  Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage())),
               color: Colors.white,
             ),
           ],
@@ -82,7 +84,6 @@ class _MainPageState extends State<MainPage> {
               child: Text("OrderDetails"),
               onPressed: () => {},
             ),
-            buildNavigationalButton("Settings", (context) => SettingsPage()),
           ]),
         ));
   }
