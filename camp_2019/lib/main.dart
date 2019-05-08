@@ -28,21 +28,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<String> _machines = ["mid: 01", "mid: 02", "mid: 03"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            textAlign: TextAlign.center,
+          ),
           automaticallyImplyLeading: true,
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
+              color: Colors.white,
+            ),
+          ],
         ),
         body: Center(
           child: Column(children: [
-            RaisedButton(
-              child: Text("Spike"),
-              onPressed: () => {},
+            DropdownButton<String>(
+                items: _machines.map<DropdownMenuItem<String>>((value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (value) => {},
+            value: "mid: 01",
             ),
             RaisedButton(
-              child: Text("Main"),
+              child: Text("Spike"),
               onPressed: () => {},
             ),
             RaisedButton(
@@ -58,15 +77,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context) ) {
+  RaisedButton buildNavigationalButton(String buttonText,
+      StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
-            child: Text(buttonText),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: destinationBuilder),
-              );
-            },
-          );
+      child: Text(buttonText),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: destinationBuilder),
+        );
+      },
+    );
   }
 }
