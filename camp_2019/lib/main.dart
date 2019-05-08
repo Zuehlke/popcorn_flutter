@@ -1,3 +1,4 @@
+import 'package:camp_2019/order_details_page.dart';
 import 'package:camp_2019/order_page.dart';
 import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () => {},
             ),
             buildNavigationalButton("Order", (context) => OrderPage()),
-            RaisedButton(
-              child: Text("OrderDetails"),
-              onPressed: () => {},
-            ),
+            buildNavigationalButton(
+                "Order details", (context) => OrderDetailsPage()),
             buildNavigationalButton("Settings", (context) => SettingsPage()),
           ]),
         ));
