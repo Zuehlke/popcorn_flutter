@@ -1,4 +1,5 @@
 import 'package:camp_2019/order_page.dart';
+import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -31,33 +32,40 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
+        appBar: AppBar(
+          title: Text(widget.title),
+          automaticallyImplyLeading: true,
+        ),
         body: Center(
           child: Column(children: [
             RaisedButton(
               child: Text("Spike"),
-              onPressed: () => {setState(() => {})},
+              onPressed: () => {},
             ),
             RaisedButton(
               child: Text("Main"),
-              onPressed: () => {setState(() => {})},
+              onPressed: () => {},
             ),
-            RaisedButton(
-              child: Text("Order"),
-              onPressed: () => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => OrderPage()))
-                  },
-            ),
+            buildNavigationalButton("Order", (context) => OrderPage()),
             RaisedButton(
               child: Text("OrderDetails"),
-              onPressed: () => {setState(() => {})},
+              onPressed: () => {},
             ),
-            RaisedButton(
-              child: Text("Settings"),
-              onPressed: () => {setState(() => {})},
-            ),
+            buildNavigationalButton("Settings", (context) => SettingsPage()),
           ]),
         ));
+  }
+
+  RaisedButton buildNavigationalButton(String buttonText,
+      StatefulWidget destinationBuilder(BuildContext context)) {
+    return RaisedButton(
+      child: Text(buttonText),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: destinationBuilder),
+        );
+      },
+    );
   }
 }
