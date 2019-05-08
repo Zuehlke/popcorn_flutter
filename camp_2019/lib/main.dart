@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:camp_2019/order_details_page.dart';
+import 'package:camp_2019/order_page.dart';
+import 'package:camp_2019/screens/settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,7 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
+        appBar: AppBar(
+          title: Text(widget.title),
+          automaticallyImplyLeading: true,
+        ),
         body: Center(
           child: Column(children: [
             RaisedButton(
@@ -71,20 +78,25 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("Main"),
               onPressed: () => {setState(() => {})},
             ),
-            RaisedButton(
-              child: Text("Order"),
-              onPressed: () => {setState(() => {})},
-            ),
-            RaisedButton(
-              child: Text("OrderDetails"),
-              onPressed: () => {setState(() => {})},
-            ),
-            RaisedButton(
-              child: Text("Settings"),
-              onPressed: () => {setState(() => {})},
-            ),
+            buildNavigationalButton("Order", (context) => OrderPage()),
+            buildNavigationalButton(
+                "Order details", (context) => OrderDetailsPage()),
+            buildNavigationalButton("Settings", (context) => SettingsPage()),
           ]),
         ));
+  }
+
+  RaisedButton buildNavigationalButton(String buttonText,
+      StatefulWidget destinationBuilder(BuildContext context)) {
+    return RaisedButton(
+      child: Text(buttonText),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: destinationBuilder),
+        );
+      },
+    );
   }
 }
 
@@ -105,6 +117,5 @@ class Spike {
 
     var responseJson = json.decode(response.body);
     return responseJson['id'] as String;
-    // return int.parse(responseJson[orderId] as int);
   }
 }
