@@ -1,4 +1,5 @@
 import 'package:camp_2019/amount.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
@@ -15,13 +16,10 @@ class OrderPageState extends State<OrderPage> {
   Flavours _selectedFlavour = Flavours.Salty;
   final _formKey = GlobalKey<FormState>();
 
-  RadioListTile<Flavours> createFlavourRadioButton(Flavours flavourValue) {
-    var flavourString = flavourValue.toString();
-    flavourString = flavourString.substring(flavourString.indexOf('.') + 1);
-
+  RadioListTile<Flavours> createFlavourRadioButton(Flavours flavour) {
     var result = RadioListTile<Flavours>(
-      title: Text(flavourString),
-      value: flavourValue,
+      title: Text(describeEnum(flavour)),
+      value: flavour,
       groupValue: _selectedFlavour,
       onChanged: (Flavours value) {
         setState(() {
@@ -74,16 +72,18 @@ class OrderPageState extends State<OrderPage> {
                 inputType: InputType.both,
                 decoration: InputDecoration(hintText: "PickupTime"),
               ),
-              Align(
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
                 child: SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
+                    padding: EdgeInsets.all(15),
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {}
                     },
-                    child: Text('Submit'),
+                    child: Text('Submit Order'),
                   ),
                 ),
               ),
