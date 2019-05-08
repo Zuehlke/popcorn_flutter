@@ -1,3 +1,4 @@
+import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -30,33 +31,42 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
-        body: Center(
-          child: Column(
-            children: [
-              RaisedButton(
-                child: Text("Spike"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("Main"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("Order"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-                child: Text("OrderDetails"),
-                onPressed: () => {setState(() => {})},
-              ),
-              RaisedButton(
-              child: Text("Settings"),
-              onPressed: () => {setState(() => {})},
-              ),
-          ]
+        appBar: AppBar(
+          title: Text(widget.title),
+          automaticallyImplyLeading: true,
         ),
-    )
-    );
+        body: Center(
+          child: Column(children: [
+            RaisedButton(
+              child: Text("Spike"),
+              onPressed: () => {},
+            ),
+            RaisedButton(
+              child: Text("Main"),
+              onPressed: () => {},
+            ),
+            RaisedButton(
+              child: Text("Order"),
+              onPressed: () => {},
+            ),
+            RaisedButton(
+              child: Text("OrderDetails"),
+              onPressed: () => {},
+            ),
+            buildNavigationalButton("Settings", (context) => SettingsPage()),
+          ]),
+        ));
+  }
+
+  RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context) ) {
+    return RaisedButton(
+            child: Text(buttonText),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: destinationBuilder),
+              );
+            },
+          );
   }
 }
