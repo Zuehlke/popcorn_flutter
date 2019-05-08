@@ -12,23 +12,29 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MyHomePage(title: 'Popcorn Maker'),
+      home: MainPage(title: 'Popcorn Maker'),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainPageState createState() => _MainPageState(["mid: 01", "mid: 02", "mid: 03"]);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final List<String> _machines = ["mid: 01", "mid: 02", "mid: 03"];
+class _MainPageState extends State<MainPage> {
+  final List<String> _machines;
+  String selectedMachine;
+
+  _MainPageState(this._machines) : super()
+  {
+    selectedMachine = _machines[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text(value),
               );
             }).toList(),
-            onChanged: (value) => {},
-            value: "mid: 01",
+            onChanged: (newValue) => {
+                  setState(() {
+                    selectedMachine = newValue;
+                  })
+            },
+            value: selectedMachine,
             ),
             RaisedButton(
               child: Text("Spike"),
