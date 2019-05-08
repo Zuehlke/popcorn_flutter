@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () => {
                     setState(() => {
                           Spike.sendRequest(
-                                  'E63D8231-CDAA-44E2-8B7F-A388EF2BAB53')
+                                  'cb60b9f71f18496a8d0574c9d705963f')
                               .then((String orderId) => {
                                     Fluttertoast.showToast(
                                         msg:
@@ -112,7 +112,7 @@ class Spike {
     final int statusCode = response.statusCode;
 
     if (statusCode != 200) {
-      throw response.body;
+      throw response.reasonPhrase;
     }
 
     var responseJson = json.decode(response.body);
