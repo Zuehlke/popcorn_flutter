@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
 
     var client = new Client();
     client.getAllMachines().then((machines) => setState(() {
-          _machines = machines.map((machine) => machine.name).toList();
+          _machines = machines.map((machine) => machine.id).toList();
           _selectedMachine = _machines[0];
         }));
   }

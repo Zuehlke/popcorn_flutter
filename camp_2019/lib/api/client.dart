@@ -25,11 +25,29 @@ class Client {
 
   Future<Machine> getMachine(String machineId) async {
     var response = await _get("$_baseUrl/machines/$machineId");
-    dynamic machineDto = json.decode(response.body);
-
-    // TODO extend Machine
-    return new Machine(machineDto['id'], machineDto['id']);
+    return parseMachine(json.decode(response.body));
   }
+
+  /*
+
+   "id": "E63D8231-CDAA-44E2-8B7F-A388EF2BAB53",
+  "status": "IDLE",
+  "cornLevel": 87,
+  "flavours": [
+    {
+      "name": "SWEET",
+      "level": 42
+    },
+    {
+      "name": "CARAMEL",
+      "level": 99
+    },
+    {
+      "name": "WASABI",
+      "level": 1
+    }
+
+   */
 
   Future<http.Response> _get(String url) async => await http.get(url, headers: _headers);
 
