@@ -1,28 +1,25 @@
 import 'package:camp_2019/models/amount.dart';
-import 'package:camp_2019/models/flavours.dart';
+import 'package:camp_2019/models/flavour.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
-class OrderPage extends StatefulWidget {
+class OrderCreatePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new OrderPageState();
-  }
+  State<StatefulWidget> createState() => _OrderCreatePageState();
 }
 
-class OrderPageState extends State<OrderPage> {
-  Flavours _selectedFlavour = Flavours.Salty;
+class _OrderCreatePageState extends State<OrderCreatePage> {
+  Flavour _selectedFlavour = Flavour.Salty;
   final _formKey = GlobalKey<FormState>();
 
-  RadioListTile<Flavours> createFlavourRadioButton(Flavours flavour) {
-    var result = RadioListTile<Flavours>(
+  RadioListTile<Flavour> createFlavourRadioButton(Flavour flavour) {
+    var result = RadioListTile<Flavour>(
       title: Text(describeEnum(flavour)),
       value: flavour,
       groupValue: _selectedFlavour,
-      onChanged: (Flavours value) {
+      onChanged: (Flavour value) {
         setState(() {
           _selectedFlavour = value;
         });
@@ -64,10 +61,10 @@ class OrderPageState extends State<OrderPage> {
                   child: Text("Flavour"),
                 ),
               ),
-              createFlavourRadioButton(Flavours.Salty),
-              createFlavourRadioButton(Flavours.Sweet),
-              createFlavourRadioButton(Flavours.Caramel),
-              createFlavourRadioButton(Flavours.Wasabi),
+              createFlavourRadioButton(Flavour.Salty),
+              createFlavourRadioButton(Flavour.Sweet),
+              createFlavourRadioButton(Flavour.Caramel),
+              createFlavourRadioButton(Flavour.Wasabi),
               DateTimePickerFormField(
                 format: DateFormat("dd.MM.yyyy HH:mm"),
                 inputType: InputType.both,

@@ -1,5 +1,5 @@
 
-import 'package:camp_2019/models/flavours.dart';
+import 'package:camp_2019/models/flavour.dart';
 import 'package:camp_2019/models/order_status.dart';
 
 class Order {
@@ -7,7 +7,7 @@ class Order {
 
   String userName;
   int amount;
-  Flavours flavour;
+  Flavour flavour;
   OrderStatus status;
   DateTime pickupTime;
 }
