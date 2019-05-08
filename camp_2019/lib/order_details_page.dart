@@ -1,5 +1,7 @@
 import 'package:camp_2019/order_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   @override
@@ -14,16 +16,17 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
   List<OrderDetailsItem> _items;
 
   OrderDetailsPageState() {
-    _order =
-    new Order('Hans', 5, Flavours.Sweet, Status.In_Progress, DateTime.now());
+    _order = new Order(
+        'Hans', 5, Flavours.Sweet, Status.InProgress, DateTime.now());
 
     _items = [
       new OrderDetailsItem("Name", _order.userName),
       new OrderDetailsItem("Amount (g)", _order.amount.toString()),
-      new OrderDetailsItem("Falvour", _order.flavour.toString()),
-      new OrderDetailsItem("Status", _order.status.toString()),
-      new OrderDetailsItem("Pickup Time", _order.pickupTime.toString()),
+      new OrderDetailsItem("Falvour", describeEnum(_order.flavour)),
+      new OrderDetailsItem("Status", describeEnum(_order.status)),
+      new OrderDetailsItem("Pickup Time", new DateFormat("dd.MM.yyyy HH:mm").format(_order.pickupTime)),
     ];
+
   }
 
   @override
@@ -33,15 +36,22 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
         appBar: new AppBar(
           title: Text('Order Popcorn'),
         ),
-        body: ListView.separated(
-          itemCount: _items.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(),
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: Text('${_items[index].name}'),
-              trailing: Text('${_items[index].value}'),
-            );
-          },
+        body: Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          child: ListView.separated(
+            itemCount: _items.length,
+            shrinkWrap: true,
+            separatorBuilder: (BuildContext context, int index) => Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: Text('${_items[index].value}'),
+                trailing: Text('${_items[index].name}'),
+              );
+            },
+          ),
         ));
   }
 }
@@ -63,4 +73,4 @@ class Order {
   DateTime pickupTime;
 }
 
-enum Status { In_Queue, In_Progress }
+enum Status { InQueue, InProgress }
