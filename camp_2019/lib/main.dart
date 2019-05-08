@@ -1,3 +1,4 @@
+import 'package:camp_2019/order_page.dart';
 import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -45,10 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("Main"),
               onPressed: () => {},
             ),
-            RaisedButton(
-              child: Text("Order"),
-              onPressed: () => {},
-            ),
+            buildNavigationalButton("Order", (context) => OrderPage()),
             RaisedButton(
               child: Text("OrderDetails"),
               onPressed: () => {},
@@ -58,15 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context) ) {
+  RaisedButton buildNavigationalButton(String buttonText,
+      StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
-            child: Text(buttonText),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: destinationBuilder),
-              );
-            },
-          );
+      child: Text(buttonText),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: destinationBuilder),
+        );
+      },
+    );
   }
 }
