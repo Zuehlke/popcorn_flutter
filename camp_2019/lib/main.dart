@@ -42,8 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("Spike"),
               onPressed: () => {
                     setState(() => {
-                          Spike.sendRequest(42)
-                              .then((int orderId) => {
+                          Spike.sendRequest(
+                                  'E63D8231-CDAA-44E2-8B7F-A388EF2BAB53')
+                              .then((String orderId) => {
                                     Fluttertoast.showToast(
                                         msg:
                                             "Successfully sent request and received back orderId " +
@@ -88,21 +89,22 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Spike {
-  static Future<int> sendRequest(int machineId) async {
+  static Future<String> sendRequest(String machineId) async {
     var data = {"userName": "FlutterSpike", "amount": 100, "flavour": "SWEET"};
     var url = 'https://popcornmakerbackend20190507022416.azurewebsites.net/api';
-    url += '/machines/' + machineId.toString() + '/orders';
+    url += '/machines/' + machineId + '/orders';
     var headers = {'Content-Type': 'application/json'};
-    var response = await http.post(url, body: json.encode(data), headers: headers);
+    var response =
+        await http.post(url, body: json.encode(data), headers: headers);
 
     final int statusCode = response.statusCode;
 
-    if (statusCode != 201) {
+    if (statusCode != 200) {
       throw response.body;
     }
 
     var responseJson = json.decode(response.body);
-    return responseJson['orderId'] as int;
+    return responseJson['id'] as String;
     // return int.parse(responseJson[orderId] as int);
   }
 }
