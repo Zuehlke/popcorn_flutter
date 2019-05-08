@@ -10,20 +10,7 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState([
-        "O1",
-        "O2",
-        "O3",
-        "O1",
-        "O2",
-        "O3",
-        "O1",
-        "O2",
-        "O3",
-        "O1",
-        "O2",
-        "O3",
-      ]);
+  _HomePageState createState() => _HomePageState(List<String>.generate(20, (it) => "01"));
 }
 
 class _HomePageState extends State<HomePage> {
