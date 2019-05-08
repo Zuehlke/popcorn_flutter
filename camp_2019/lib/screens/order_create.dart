@@ -87,6 +87,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                 child: SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
+                    key: Key('submit'),
                     padding: EdgeInsets.all(15),
                     color: Colors.blue,
                     textColor: Colors.white,
