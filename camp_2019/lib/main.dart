@@ -1,5 +1,13 @@
+import 'dart:convert';
+
+import 'package:camp_2019/order_details_page.dart';
+import 'package:camp_2019/order_page.dart';
 import 'package:camp_2019/screens/settings.dart';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
@@ -129,18 +137,38 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
 
-              RaisedButton(
-                child: Text("Spike"),
-                onPressed: () => {},
-              ),
-              RaisedButton(
-                child: Text("Order"),
-                onPressed: () => {},
-              ),
-              RaisedButton(
-                child: Text("OrderDetails"),
-                onPressed: () => {},
-              ),
+                        RaisedButton(
+              child: Text("Spike"),
+              onPressed: () => {
+                    setState(() => {
+                          Spike.sendRequest(
+                                  'E63D8231-CDAA-44E2-8B7F-A388EF2BAB53')
+                              .then((String orderId) => {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Successfully sent request and received back orderId " +
+                                                orderId.toString(),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        timeInSecForIos: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0)
+                                  })
+                              .catchError((error) => {
+                                    Fluttertoast.showToast(
+                                        msg: error.toString(),
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        timeInSecForIos: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0)
+                                  })
+                        })
+                  },
+            ),
+            buildNavigationalButton("Order", (context) => OrderPage()),
+            buildNavigationalButton("Order details", (context) => OrderDetailsPage()),
+            buildNavigationalButton("Settings", (context) => SettingsPage()),
             ]),
           ),
         ));
@@ -156,5 +184,25 @@ class _MainPageState extends State<MainPage> {
         );
       },
     );
+  }
+}
+
+class Spike {
+  static Future<String> sendRequest(String machineId) async {
+    var data = {"userName": "FlutterSpike", "amount": 100, "flavour": "SWEET"};
+    var url = 'https://popcornmakerbackend20190507022416.azurewebsites.net/api';
+    url += '/machines/' + machineId + '/orders';
+    var headers = {'Content-Type': 'application/json'};
+    var response =
+        await http.post(url, body: json.encode(data), headers: headers);
+
+    final int statusCode = response.statusCode;
+
+    if (statusCode != 200) {
+      throw response.body;
+    }
+
+    var responseJson = json.decode(response.body);
+    return responseJson['id'] as String;
   }
 }
