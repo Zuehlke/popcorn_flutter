@@ -44,50 +44,47 @@ class OrderPageState extends State<OrderPage> {
           child: Form(
             autovalidate: true,
             key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Amount (in g)'),
-                    keyboardType: TextInputType.number,
-                    validator: (String text) {
-                      var num = int.tryParse(text);
-                      if (num == null || Amount.isValid(num)) {
-                        return null;
-                      }
+            child: ListView(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Amount (in g)'),
+                  keyboardType: TextInputType.number,
+                  validator: (String text) {
+                    var num = int.tryParse(text);
+                    if (num == null || Amount.isValid(num)) {
+                      return null;
+                    }
 
-                      return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
-                    },
+                    return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Flavour"),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Flavours:"),
-                    ),
-                  ),
-                  createFlavourRadioButton(Flavours.Salty),
-                  createFlavourRadioButton(Flavours.Sweet),
-                  createFlavourRadioButton(Flavours.Caramel),
-                  createFlavourRadioButton(Flavours.Wasabi),
-                  DateTimePickerFormField(
-                    format: DateFormat("dd.MM.yyyy HH:mm"),
-                    inputType: InputType.both,
-                    decoration: InputDecoration(hintText: "PickupTime"),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: RaisedButton(
+                ),
+                createFlavourRadioButton(Flavours.Salty),
+                createFlavourRadioButton(Flavours.Sweet),
+                createFlavourRadioButton(Flavours.Caramel),
+                createFlavourRadioButton(Flavours.Wasabi),
+                DateTimePickerFormField(
+                  format: DateFormat("dd.MM.yyyy HH:mm"),
+                  inputType: InputType.both,
+                  decoration: InputDecoration(hintText: "Pickup Time"),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: RaisedButton(
                       color: Colors.blue,
                       textColor: Colors.white,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {}
                       },
-                      child: Text('Submit'),
-                    ),
-                  ),
-                ],
-              ),
+                      child: Text('Submit')),
+                ),
+              ],
             ),
           ),
         ));
