@@ -7,18 +7,18 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final userNamePrefKey = "userName";
+  final _userNamePrefKey = "userName";
   TextEditingController _usernameController = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
+
     SharedPreferences.getInstance().then((preferences) {
-      if (preferences.containsKey(userNamePrefKey)) {
-        _usernameController.text = preferences.get(userNamePrefKey);
+      if (preferences.containsKey(_userNamePrefKey)) {
+        _usernameController.text = preferences.get(_userNamePrefKey);
       }
     });
-
-    super.initState();
   }
 
   @override
@@ -31,12 +31,13 @@ class _SettingsPageState extends State<SettingsPage> {
               children: <Widget>[
                 Text("Name"),
                 TextField(
-                  decoration: InputDecoration(hintText: "Please enter your "
-                      "name"),
+                  decoration: InputDecoration(
+                      hintText: "Please enter your "
+                          "name"),
                   maxLines: 1,
                   onChanged: (newText) {
                     SharedPreferences.getInstance().then((preferences) {
-                      preferences.setString(userNamePrefKey, newText);
+                      preferences.setString(_userNamePrefKey, newText);
                     });
                   },
                   controller: _usernameController,

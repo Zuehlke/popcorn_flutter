@@ -1,23 +1,22 @@
-import 'package:camp_2019/order_page.dart';
+import 'package:camp_2019/models/flavour.dart';
+import 'package:camp_2019/models/order.dart';
+import 'package:camp_2019/models/order_status.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new OrderDetailsPageState();
-  }
+  State<StatefulWidget> createState() => _OrderDetailsPageState();
 }
 
-class OrderDetailsPageState extends State<OrderDetailsPage> {
+class _OrderDetailsPageState extends State<OrderDetailsPage> {
   Order _order;
   List<OrderDetailsItem> _items;
 
-  OrderDetailsPageState() {
-    _order =
-        new Order('Hans', 5, Flavours.Sweet, Status.InProgress, DateTime.now());
+  _OrderDetailsPageState() {
+    _order = new Order("whatever", "wahetever",
+        'Hans', 5, Flavour.Sweet, OrderStatus.InProgress, DateTime.now());
 
     _items = [
       new OrderDetailsItem("Name", _order.userName),
@@ -31,7 +30,6 @@ class OrderDetailsPageState extends State<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
           title: Text('Order Popcorn'),
@@ -82,15 +80,3 @@ class OrderDetailsItem {
 
   OrderDetailsItem(this.value, this.name);
 }
-
-class Order {
-  Order(this.userName, this.amount, this.flavour, this.status, this.pickupTime);
-
-  String userName;
-  int amount;
-  Flavours flavour;
-  Status status;
-  DateTime pickupTime;
-}
-
-enum Status { InQueue, InProgress }
