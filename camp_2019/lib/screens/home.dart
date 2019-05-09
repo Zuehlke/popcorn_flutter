@@ -2,7 +2,6 @@ import 'package:camp_2019/api/client.dart';
 import 'package:camp_2019/models/machine.dart';
 import 'package:camp_2019/models/order.dart';
 import 'package:camp_2019/screens/order_create.dart';
-import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,21 +20,29 @@ class _HomePageState extends State<HomePage> {
   Machine _selectedMachine;
   var _orders = new List<Order>();
 
+  final TextStyle smallTextStyle = new TextStyle(fontSize: 16);
+
   @override
   void initState() {
     super.initState();
 
     var client = new Client();
-    client.getAllMachines().then((machines) => setState(() {
-          _machines = machines;
-          _selectedMachine = _machines[0];
-        }));
+    client
+        .getAllMachines()
+        .then((machines) => setState(() {
+              _machines = machines;
+              _selectedMachine = _machines[0];
+            }))
+        .then((t) => {
+              client.getOrders(_selectedMachine.id).then((newOrders) => {
+                    setState(() => {_orders = newOrders})
+                  })
+            });
   }
 
   @override
   Widget build(BuildContext context) {
-    final borderSide =
-        BorderSide(color: Colors.grey, width: 1.0, style: BorderStyle.solid);
+    final borderSide = BorderSide(color: Colors.grey, width: 1.0, style: BorderStyle.solid);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -47,129 +54,121 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
               color: Colors.white,
             ),
           ],
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Machine dropdown
-
-                  Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                    child: DropdownButton<String>(
-                      items: _machines.map((value) {
-                        return DropdownMenuItem<String>(
-                          value: value.id,
-                          child: Text(value.id),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedMachine = _machines
-                              .firstWhere((value) => value.id == newValue);
-                        });
-
-                        var client = new Client();
-                        client.getOrders(_selectedMachine.id).then((orders) => {
-                              setState(() {
-                                _orders =
-                                    orders;
-                              })
-                            });
-                      },
-                      value: _selectedMachine.id,
-                    ),
-                  ),
-
-                  // Machine status
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Table(
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      border: TableBorder(
-                          bottom: borderSide,
-                          top: borderSide,
-                          left: borderSide,
-                          right: borderSide,
-                          horizontalInside: borderSide),
-                      children: [
-                        TableRow(children: [
-                          Text("Machine State"),
-                          Text(describeEnum(_selectedMachine.status))
-                        ]),
-                        TableRow(children: [
-                          Text("Corn Level"),
-                          Text(_selectedMachine.level.toString())
-                        ]),
-                        TableRow(children: [
-                          Text("Flavours"),
-                          Text(_selectedMachine.flavours
-                              .map(describeEnum)
-                              .join(","))
-                        ])
-                      ],
-                    ),
-                  ),
-
-                  // Machine Order Queue
-                  Align(
-                    heightFactor: 1.5,
-                    child: Text(
-                      "Queue",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    alignment: Alignment.bottomLeft,
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: borderSide,
-                              right: borderSide,
-                              left: borderSide,
-                              bottom: borderSide),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Scrollbar(
-                        child: ListView.separated(
-                          padding: EdgeInsets.all(6),
-                          itemCount: _orders.length,
-                          separatorBuilder: (context, index) => Divider(),
-                          itemBuilder: (context, i) {
-                            var order = _orders[i];
-                            return Text(
-                              "${describeEnum(order.flavour)} for ${order.userName}",
-                              style: TextStyle(fontSize: 18),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  buildNavigationalButton(
-                      "Order", (context) => OrderCreatePage(_selectedMachine.id)),
-                  buildNavigationalButton(
-                      "Order details", (context) => OrderDetailsPage()),
-                  buildNavigationalButton(
-                      "Settings", (context) => SettingsPage()),
-                ]),
-          ),
-        ));
+        body: buildBody(borderSide));
   }
 
-  RaisedButton buildNavigationalButton(String buttonText,
-      StatefulWidget destinationBuilder(BuildContext context)) {
+  Widget buildBody(BorderSide borderSide) {
+    if (_machines.isEmpty) {
+      return Center(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[CircularProgressIndicator(), Text("Fetching Your Machine")],
+      ));
+    }
+
+    const defaultPadding = 6.0;
+    const defaultCornerRadius = 8.0;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(defaultPadding),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Machine status
+          Container(
+            padding: EdgeInsets.all(defaultPadding),
+            decoration: BoxDecoration(
+                border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide), borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
+            child: Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              border: TableBorder(horizontalInside: borderSide),
+              children: [
+                TableRow(children: [
+                  Text("Machine State"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(describeEnum(_selectedMachine.status), style: smallTextStyle),
+                  )
+                ]),
+                TableRow(children: [
+                  Text("Corn Level"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(_selectedMachine.level.toString(), style: smallTextStyle),
+                  )
+                ]),
+                TableRow(children: [
+                  Text("Flavours"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(_selectedMachine.flavours.map(describeEnum).join(","), style: smallTextStyle),
+                  )
+                ])
+              ],
+            ),
+          ),
+
+          // Machine Order Queue
+          Align(
+            heightFactor: 1.5,
+            child: Text(
+              "Queue",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            alignment: Alignment.bottomLeft,
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                  border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide),
+                  borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
+              child: buildOrderList(),
+            ),
+          ),
+          buildNavigationalButton("Order Popcorn", (context) => OrderCreatePage(_selectedMachine.id)),
+        ]),
+      ),
+    );
+  }
+
+  Widget buildOrderList() {
+    if (_orders.isEmpty) {
+      return Center(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[CircularProgressIndicator(), Text("Fetching Orders")],
+      ));
+    }
+
+    return Scrollbar(
+      child: ListView.separated(
+        padding: EdgeInsets.all(6),
+        itemCount: _orders.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, i) {
+          var order = _orders[i];
+          return Text(
+            "${i+1} ${describeEnum(order.flavour)} for ${order.userName}",
+            style: smallTextStyle,
+          );
+        },
+      ),
+    );
+  }
+
+  RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
-      child: Text(buttonText),
+      child: Text(
+        buttonText,
+        style: TextStyle(color: Colors.white),
+      ),
+      color: Colors.purple,
       onPressed: () {
         Navigator.push(
           context,
