@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderCreatePage extends StatefulWidget {
   String _machineId;
@@ -106,11 +107,28 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
     );
   }
 
-  void createOrder() {
-    UserNameRegistry().getCurrent().then((userName){
-      var amount = int.tryParse(_amountController.text) ?? 0;
-      var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
-      Client().createOrder(orderRequest);
-    });
+  Future<void> createOrder() async {
+    var userName = await UserNameRegistry().getCurrent();
+    var amount = int.tryParse(_amountController.text) ?? 0;
+    var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
+    try {
+      await Client().createOrder(orderRequest);
+      navigateBack();
+    } catch (ex) {
+      showErrorToast();
+    }
+  }
+
+  void navigateBack() {}
+
+  void showErrorToast() {
+    Fluttertoast.showToast(
+        msg: "Something went wrong...",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
