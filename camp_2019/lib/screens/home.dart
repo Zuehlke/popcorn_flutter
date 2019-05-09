@@ -154,13 +154,13 @@ class _HomePageState extends State<HomePage> {
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, i) {
           var order = _orders[i];
-          return GestureDetector(
-            onTap: () =>  Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OrderDetailsPage(_orders[i]))),
-            child: Text(
-              "${i+1} ${describeEnum(order.flavour)} for ${order.userName}",
-              style: smallTextStyle,
+          return ListTile(
+              onTap: () =>  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderDetailsPage(_orders[i]))),
+              title:  Text(
+                "${describeEnum(order.flavour)} for ${order.userName}",
+                style: smallTextStyle,
             ),
           );
         },
