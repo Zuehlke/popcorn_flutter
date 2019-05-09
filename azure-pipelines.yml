@@ -15,11 +15,6 @@ jobs:
       - task: FlutterTest@0
         inputs:
           projectDirectory: $(projectDirectory)
-      - task: CmdLine@2
-        inputs:
-          script: "%FlutterToolPath%/flutter analyze"
-          workingDirectory: $(projectDirectory)
-          failOnStderr: true
       - task: CopyFiles@2
         inputs:
           contents: "**/*.apk"
