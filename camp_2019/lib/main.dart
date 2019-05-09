@@ -8,9 +8,7 @@ class PopcornApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Popcorn Maker',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
+      theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
       home: HomePage(title: 'Popcorn Maker'),
       debugShowCheckedModeBanner: false,
     );
