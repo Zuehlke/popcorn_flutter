@@ -21,6 +21,8 @@ class _HomePageState extends State<HomePage> {
   Machine _selectedMachine;
   var _orders = new List<Order>();
 
+  final TextStyle smallTextStyle = new TextStyle(fontSize: 16);
+
   @override
   void initState() {
     super.initState();
@@ -67,25 +69,46 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[CircularProgressIndicator(), Text("Fetching Machines")],
+        children: <Widget>[CircularProgressIndicator(), Text("Fetching Your Machine")],
       ));
     }
 
+    const defaultPadding = 6.0;
+    const defaultCornerRadius = 8.0;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(defaultPadding),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          
           // Machine status
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
+          Container(
+            padding: EdgeInsets.all(defaultPadding),
+            decoration: BoxDecoration(
+                border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide), borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
             child: Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              border: TableBorder(bottom: borderSide, top: borderSide, left: borderSide, right: borderSide, horizontalInside: borderSide),
+              border: TableBorder(horizontalInside: borderSide),
               children: [
-                TableRow(children: [Text("Machine State"), Text(describeEnum(_selectedMachine.status))]),
-                TableRow(children: [Text("Corn Level"), Text(_selectedMachine.level.toString())]),
-                TableRow(children: [Text("Flavours"), Text(_selectedMachine.flavours.map(describeEnum).join(","))])
+                TableRow(children: [
+                  Text("Machine State"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(describeEnum(_selectedMachine.status), style: smallTextStyle),
+                  )
+                ]),
+                TableRow(children: [
+                  Text("Corn Level"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(_selectedMachine.level.toString(), style: smallTextStyle),
+                  )
+                ]),
+                TableRow(children: [
+                  Text("Flavours"),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: Text(_selectedMachine.flavours.map(describeEnum).join(","), style: smallTextStyle),
+                  )
+                ])
               ],
             ),
           ),
@@ -104,7 +127,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(3),
               decoration: BoxDecoration(
                   border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide),
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
+                  borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
               child: buildOrderList(),
             ),
           ),
@@ -132,8 +155,8 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, i) {
           var order = _orders[i];
           return Text(
-            "${describeEnum(order.flavour)} for ${order.userName}",
-            style: TextStyle(fontSize: 18),
+            "${i+1} ${describeEnum(order.flavour)} for ${order.userName}",
+            style: smallTextStyle,
           );
         },
       ),
@@ -142,7 +165,10 @@ class _HomePageState extends State<HomePage> {
 
   RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
-      child: Text(buttonText, style: TextStyle(color: Colors.white),),
+      child: Text(
+        buttonText,
+        style: TextStyle(color: Colors.white),
+      ),
       color: Colors.purple,
       onPressed: () {
         Navigator.push(
