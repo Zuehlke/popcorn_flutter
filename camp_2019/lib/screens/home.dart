@@ -4,9 +4,9 @@ import 'package:camp_2019/models/order.dart';
 import 'package:camp_2019/screens/order_create.dart';
 import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
+import 'package:camp_2019/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -51,8 +51,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          SettingsPage(SharedPreferences.getInstance()))),
+                      builder: (context) => SettingsPage(UserNameRegistry()))),
               color: Colors.white,
             ),
           ],
@@ -158,14 +157,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  buildNavigationalButton(
-                      "Order", (context) => OrderCreatePage(_selectedMachine.id)),
+                  buildNavigationalButton("Order",
+                      (context) => OrderCreatePage(_selectedMachine.id)),
                   buildNavigationalButton(
                       "Order details", (context) => OrderDetailsPage()),
-                  buildNavigationalButton(
-                      "Settings",
-                      (context) =>
-                          SettingsPage(SharedPreferences.getInstance())),
+                  buildNavigationalButton("Settings",
+                      (context) => SettingsPage(UserNameRegistry())),
                 ]),
           ),
         ));

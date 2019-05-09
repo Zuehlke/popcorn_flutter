@@ -1,14 +1,14 @@
 import 'package:camp_2019/user_name_registry.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
-  final Future<SharedPreferences> _preferences;
+  final UserNameRegistry _userNameRegistry;
 
-  SettingsPage(this._preferences);
+  SettingsPage(this._userNameRegistry);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState(UserNameRegistry());
+  _SettingsPageState createState() =>
+      _SettingsPageState(this._userNameRegistry);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
