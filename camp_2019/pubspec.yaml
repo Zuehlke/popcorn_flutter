@@ -14,7 +14,7 @@ description: The Flutter app for the Popcornmaker - Zuehlke Camp 2019
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -28,6 +28,7 @@ dependencies:
   fluttertoast: ^3.0.4
 
   datetime_picker_formfield: 0.1.8
+  rxdart: ^0.22.0
 
 dev_dependencies:
   flutter_driver:

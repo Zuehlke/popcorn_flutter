@@ -1,6 +1,7 @@
 
 import 'package:camp_2019/models/flavour.dart';
 import 'package:camp_2019/models/order_status.dart';
+import 'package:camp_2019/utils/utils.dart';
 
 class Order {
   Order(this.id, this.machineId, this.userName, this.amount, this.flavour, this.status, this.pickupTime);
@@ -21,8 +22,7 @@ Order parseOrder(dynamic json) {
   var userName = json['userName'];
   var amount = json['amount'];
   var flavour = parseFlavour(json['flavour']);
-  //var pickupTime = json['pickupTime'];
-  var pickupTime = DateTime.now(); //TODO: fix date time parsing
+  var pickupTime = Utils.parseDateTime(json['pickupTime']);
   var status = parseOrderStatus(json['status']);
 
   return Order(id, machineId, userName, amount, flavour, status, pickupTime);
