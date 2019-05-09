@@ -8,6 +8,11 @@ class Level {
   }
 
   int get value => _value;
+
+  @override
+  String toString() {
+    return "$_value%";
+  }
 }
 
 Level parseLevel(String level) => Level(int.parse(level));

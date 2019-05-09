@@ -1,7 +1,9 @@
 import 'package:camp_2019/api/client.dart';
+import 'package:camp_2019/models/machine.dart';
 import 'package:camp_2019/screens/order_create.dart';
 import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,9 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _machines = new List<String>();
+  var _machines = new List<Machine>();
+  Machine _selectedMachine;
   List<String> _orders;
-  String _selectedMachine;
 
   _HomePageState(this._orders) : super();
 
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
     var client = new Client();
     client.getAllMachines().then((machines) => setState(() {
-          _machines = machines.map((machine) => machine.id).toList();
+          _machines = machines;
           _selectedMachine = _machines[0];
         }));
   }
@@ -64,18 +66,18 @@ class _HomePageState extends State<HomePage> {
                     decoration:
                         BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
-                      items: _machines.map<DropdownMenuItem<String>>((value) {
+                      items: _machines.map((value) {
                         return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                          value: value.id,
+                          child: Text(value.id),
                         );
                       }).toList(),
                       onChanged: (newValue) => {
                             setState(() {
-                              _selectedMachine = newValue;
+                              _selectedMachine = _machines.firstWhere((value) => value.id == newValue);
                             })
                           },
-                      value: _selectedMachine,
+                      value: _selectedMachine.id,
                     ),
                   ),
 
@@ -93,11 +95,11 @@ class _HomePageState extends State<HomePage> {
                           horizontalInside: borderSide),
                       children: [
                         TableRow(
-                            children: [Text("Machine State"), Text("BUSY")]),
-                        TableRow(children: [Text("Corn Level"), Text("81%")]),
+                            children: [Text("Machine State"), Text(describeEnum(_selectedMachine.status))]),
+                        TableRow(children: [Text("Corn Level"), Text(_selectedMachine.level.toString())]),
                         TableRow(children: [
                           Text("Flavours"),
-                          Text("SWEET, SALTY, CARAMEL, WASABI")
+                          Text(_selectedMachine.flavours.map(describeEnum).join(","))
                         ])
                       ],
                     ),
