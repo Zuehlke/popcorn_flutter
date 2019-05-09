@@ -67,7 +67,7 @@ class Client {
     var requestJson = {
       "status": "IN_QUEUE",
     };
-    var url = "$_baseUrl/machines/${machineId}/orders/${orderId}";
+    var url = "$_baseUrl/machines/$machineId/orders/$orderId";
     var body = json.encode(requestJson);
     var response = await _put(url, body);
     if (response.statusCode != 200) {

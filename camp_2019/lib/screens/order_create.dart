@@ -9,7 +9,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class OrderCreatePage extends StatefulWidget {
-  String _machineId;
+  final String _machineId;
 
   OrderCreatePage(this._machineId);
 
