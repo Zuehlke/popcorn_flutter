@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
+  final Future<SharedPreferences> _preferences;
+
+  SettingsPage(this._preferences);
+
   @override
   _SettingsPageState createState() => _SettingsPageState(UserNameRegistry());
 }
@@ -18,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
 
     _userNameRegistry.getCurrent().then((value) {
-        _userNameController.text = value;
+      _userNameController.text = value;
     });
   }
 
