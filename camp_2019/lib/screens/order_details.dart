@@ -1,31 +1,18 @@
-import 'package:camp_2019/models/flavour.dart';
 import 'package:camp_2019/models/order.dart';
-import 'package:camp_2019/models/order_status.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class OrderDetailsPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _OrderDetailsPageState();
-}
+class OrderDetailsPage extends StatelessWidget {
+  final List<OrderDetailsItem> _items = List<OrderDetailsItem>();
 
-class _OrderDetailsPageState extends State<OrderDetailsPage> {
-  Order _order;
-  List<OrderDetailsItem> _items;
-
-  _OrderDetailsPageState() {
-    _order = new Order("whatever", "wahetever",
-        'Hans', 5, Flavour.Sweet, OrderStatus.InProgress, DateTime.now());
-
-    _items = [
-      new OrderDetailsItem("Name", _order.userName),
-      new OrderDetailsItem("Amount (g)", _order.amount.toString()),
-      new OrderDetailsItem("Flavour", describeEnum(_order.flavour)),
-      new OrderDetailsItem("Status", describeEnum(_order.status)),
-      new OrderDetailsItem("Pickup Time",
-          new DateFormat("dd.MM.yyyy HH:mm").format(_order.pickupTime)),
-    ];
+  OrderDetailsPage(Order order) {
+    _items.add(OrderDetailsItem("Name", order.userName));
+    _items.add(OrderDetailsItem("Amount (g)", order.amount.toString()));
+    _items.add(OrderDetailsItem("Flavour", describeEnum(order.flavour)));
+    _items.add(OrderDetailsItem("Status", describeEnum(order.status)));
+    _items.add(OrderDetailsItem("Pickup Time",
+        new DateFormat("dd.MM.yyyy HH:mm").format(order.pickupTime)));
   }
 
   @override
@@ -53,19 +40,6 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       trailing: Text('${_items[index].name}'),
                     );
                   },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(15),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: () {},
-                    child: Text('Cancel Order'),
-                  ),
                 ),
               ),
             ],
