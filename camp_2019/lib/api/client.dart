@@ -8,10 +8,9 @@ import 'package:PopcornMaker/models/order_request.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
-
   static final Client _instance = Client._internal();
 
-  factory Client(){
+  factory Client() {
     return _instance;
   }
 
@@ -24,7 +23,10 @@ class Client {
   Future<List<Machine>> getAllMachines() async {
     var response = await _get("$_baseUrl/machines");
 
-    List<dynamic> getAllResponse = json.decode(response.body);
+    List<dynamic> getAllResponse = [];
+    if (response.statusCode == 200) {
+      getAllResponse = json.decode(response.body);
+    }
 
     List<Machine> result = new List<Machine>();
     for (String machineId in getAllResponse) {
@@ -65,7 +67,7 @@ class Client {
     var requestJson = {
       "status": "IN_QUEUE",
     };
-    var url = "$_baseUrl/machines/${machineId}/orders/${orderId}";
+    var url = "$_baseUrl/machines/$machineId/orders/$orderId";
     var body = json.encode(requestJson);
     var response = await _put(url, body);
     throwOnError(response);

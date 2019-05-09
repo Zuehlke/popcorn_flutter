@@ -5,6 +5,7 @@ import 'package:PopcornMaker/models/order.dart';
 import 'package:PopcornMaker/screens/order_create.dart';
 import 'package:PopcornMaker/screens/order_details.dart';
 import 'package:PopcornMaker/screens/settings.dart';
+import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -37,8 +38,7 @@ class _HomePageState extends State<HomePage> {
             }))
         .then((t) => refreshOrders());
 
-    Observable.periodic(Duration(seconds: 5))
-    .listen((_) => refreshOrders());
+    Observable.periodic(Duration(seconds: 5)).listen((_) => refreshOrders());
   }
 
   Future<void> refreshOrders() {
@@ -67,8 +67,10 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SettingsPage(UserNameRegistry()))),
               color: Colors.white,
             ),
           ],
@@ -188,20 +190,23 @@ class _HomePageState extends State<HomePage> {
 
     return Scrollbar(
       child: ListView.builder(
-
         padding: EdgeInsets.all(6),
         itemCount: _orders.length,
         itemBuilder: (context, i) {
           var order = _orders[i];
           return Card(
             child: ListTile(
-                onTap: () =>  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OrderDetailsPage(_orders[i]))),
-                leading: Image(image: AssetImage('assets/popcorn_purple.png'),  height: 40,),
-                title:  Text(
-                  "${describeEnum(order.flavour)} popcorn for ${order.userName}",
-                  style: smallTextStyle,
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OrderDetailsPage(_orders[i]))),
+              leading: Image(
+                image: AssetImage('assets/popcorn_purple.png'),
+                height: 40,
+              ),
+              title: Text(
+                "${describeEnum(order.flavour)} popcorn for ${order.userName}",
+                style: smallTextStyle,
               ),
             ),
           );
@@ -213,6 +218,7 @@ class _HomePageState extends State<HomePage> {
   RaisedButton buildNavigationalButton(String buttonText,
       StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
+      key: Key(buttonText.replaceAll(' ', '')),
       child: Text(
         buttonText,
         style: TextStyle(color: Colors.white),

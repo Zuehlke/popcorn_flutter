@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderCreatePage extends StatefulWidget {
-  String _machineId;
+  final String _machineId;
 
   OrderCreatePage(this._machineId);
 
