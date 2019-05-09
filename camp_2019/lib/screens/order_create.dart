@@ -1,18 +1,27 @@
+import 'package:camp_2019/api/client.dart';
 import 'package:camp_2019/models/amount.dart';
 import 'package:camp_2019/models/flavour.dart';
+import 'package:camp_2019/models/order_request.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class OrderCreatePage extends StatefulWidget {
+  String _machineId;
+
+  OrderCreatePage(this._machineId);
+
   @override
-  State<StatefulWidget> createState() => _OrderCreatePageState();
+  State<StatefulWidget> createState() => _OrderCreatePageState(_machineId);
 }
 
 class _OrderCreatePageState extends State<OrderCreatePage> {
+  String _machineId;
   Flavour _selectedFlavour = Flavour.Salty;
   final _formKey = GlobalKey<FormState>();
+
+  _OrderCreatePageState(this._machineId);
 
   RadioListTile<Flavour> createFlavourRadioButton(Flavour flavour) {
     var result = RadioListTile<Flavour>(
@@ -79,7 +88,9 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {}
+                      if (_formKey.currentState.validate()) {
+                        createOrder();
+                      }
                     },
                     child: Text('Submit Order'),
                   ),
@@ -90,5 +101,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
         ),
       ),
     );
+  }
+
+  void createOrder() {
   }
 }
