@@ -1,10 +1,11 @@
 import 'package:PopcornMaker/models/flavour.dart';
+import 'package:PopcornMaker/models/serving_size.dart';
 
 class OrderRequest{
   String machineId;
   String userName;
-  int amount;
+  ServingSize size;
   Flavour flavour;
 
-  OrderRequest(this.machineId, this.userName, this.amount, this.flavour);
+  OrderRequest(this.machineId, this.userName, this.size, this.flavour);
 }

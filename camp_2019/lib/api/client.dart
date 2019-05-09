@@ -5,6 +5,7 @@ import 'package:PopcornMaker/models/flavour.dart';
 import 'package:PopcornMaker/models/machine.dart';
 import 'package:PopcornMaker/models/order.dart';
 import 'package:PopcornMaker/models/order_request.dart';
+import 'package:PopcornMaker/models/serving_size.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
@@ -50,7 +51,7 @@ class Client {
   Future<void> createOrder(OrderRequest orderRequest) async {
     var request = {
       "userName": orderRequest.userName,
-      "amount": orderRequest.amount,
+      "amount": fromServingSize(orderRequest.size),
       "flavour": fromFlavour(orderRequest.flavour),
     };
 

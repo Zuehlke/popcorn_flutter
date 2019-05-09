@@ -1,7 +1,7 @@
 import 'package:PopcornMaker/api/client.dart';
-import 'package:PopcornMaker/models/amount.dart';
 import 'package:PopcornMaker/models/flavour.dart';
 import 'package:PopcornMaker/models/order_request.dart';
+import 'package:PopcornMaker/models/serving_size.dart';
 import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +20,10 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
   String _machineId;
   Flavour _selectedFlavour = Flavour.Salty;
   bool _isBusy = false;
-  var _servingSizes = {
-    "Small Serving": 1,
-    "Medium Serving": 2,
-    "Large Serving": 3,
-    "Avengers Serving": 4,
-  };
-  int _selectedServingSize;
-
-  TextEditingController _amountController = TextEditingController();
+  ServingSize _selectedServingSize;
 
   _OrderCreatePageState(this._machineId) {
-    _selectedServingSize = _servingSizes.values.first;
+    _selectedServingSize = ServingSize.Small;
   }
 
   RadioListTile<Flavour> createFlavourRadioButton(Flavour flavour) {
@@ -68,9 +60,9 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                     _selectedServingSize = value;
                   });
                 },
-                items: _servingSizes.entries.map((entry) {
-                  return DropdownMenuItem<int>(
-                      value: entry.value, child: Text(entry.key));
+                items: ServingSize.values.map((entry) {
+                  return DropdownMenuItem<ServingSize>(
+                      value: entry, child: Text(describeEnum(entry)));
                 }).toList()),
             Padding(
               padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
