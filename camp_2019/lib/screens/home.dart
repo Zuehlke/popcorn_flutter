@@ -1,11 +1,10 @@
 import 'dart:async';
-
-import 'package:camp_2019/api/client.dart';
-import 'package:camp_2019/models/machine.dart';
-import 'package:camp_2019/models/order.dart';
-import 'package:camp_2019/screens/order_create.dart';
-import 'package:camp_2019/screens/settings.dart';
-import 'package:camp_2019/user_name_registry.dart';
+import 'package:PopcornMaker/api/client.dart';
+import 'package:PopcornMaker/models/machine.dart';
+import 'package:PopcornMaker/models/order.dart';
+import 'package:PopcornMaker/screens/order_create.dart';
+import 'package:PopcornMaker/screens/order_details.dart';
+import 'package:PopcornMaker/screens/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -185,15 +184,26 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scrollbar(
-      child: ListView.separated(
+      child: ListView.builder(
         padding: EdgeInsets.all(6),
         itemCount: _orders.length,
-        separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, i) {
           var order = _orders[i];
-          return Text(
-            "${i + 1} ${describeEnum(order.flavour)} for ${order.userName}",
-            style: smallTextStyle,
+          return Card(
+            child: ListTile(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OrderDetailsPage(_orders[i]))),
+              leading: Image(
+                image: AssetImage('assets/popcorn_purple.png'),
+                height: 40,
+              ),
+              title: Text(
+                "${describeEnum(order.flavour)} popcorn for ${order.userName}",
+                style: smallTextStyle,
+              ),
+            ),
           );
         },
       ),

@@ -1,4 +1,4 @@
-import 'package:camp_2019/user_name_registry.dart';
+import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {

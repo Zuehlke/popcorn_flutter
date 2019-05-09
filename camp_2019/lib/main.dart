@@ -1,4 +1,4 @@
-import 'package:camp_2019/screens/home.dart';
+import 'package:PopcornMaker/screens/home.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(PopcornApp());

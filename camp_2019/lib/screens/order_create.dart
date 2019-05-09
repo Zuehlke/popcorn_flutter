@@ -1,8 +1,8 @@
-import 'package:camp_2019/api/client.dart';
-import 'package:camp_2019/models/amount.dart';
-import 'package:camp_2019/models/flavour.dart';
-import 'package:camp_2019/models/order_request.dart';
-import 'package:camp_2019/user_name_registry.dart';
+import 'package:PopcornMaker/api/client.dart';
+import 'package:PopcornMaker/models/amount.dart';
+import 'package:PopcornMaker/models/flavour.dart';
+import 'package:PopcornMaker/models/order_request.dart';
+import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';

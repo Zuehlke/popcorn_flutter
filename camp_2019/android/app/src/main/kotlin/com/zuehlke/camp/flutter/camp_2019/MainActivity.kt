@@ -1,4 +1,4 @@
-package com.zuehlke.camp.flutter.camp_2019
+package com.zuehlke.camp.flutter.PopcornMaker
 
 import android.os.Bundle
 
