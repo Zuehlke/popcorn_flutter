@@ -1,4 +1,4 @@
-# camp_2019
+# PopcornMaker
 
 The Flutter app for the Popcornmaker - Zuehlke Camp 2019
 

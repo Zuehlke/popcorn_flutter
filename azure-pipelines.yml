@@ -15,6 +15,11 @@ jobs:
     - task: FlutterTest@0
       inputs:
         projectDirectory: $(projectDirectory)
+    - task: CmdLine@2
+      inputs:
+        script: 'flutter analyze'
+        workingDirectory: $(projectDirectory)/camp_2019
+        failOnStderr: true
     - task: CopyFiles@2
       inputs:
         contents: '**/*.apk'

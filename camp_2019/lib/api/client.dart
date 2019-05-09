@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:camp_2019/models/flavour.dart';
-import 'package:camp_2019/models/machine.dart';
-import 'package:camp_2019/models/order.dart';
-import 'package:camp_2019/models/order_request.dart';
+import 'package:PopcornMaker/models/flavour.dart';
+import 'package:PopcornMaker/models/machine.dart';
+import 'package:PopcornMaker/models/order.dart';
+import 'package:PopcornMaker/models/order_request.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
