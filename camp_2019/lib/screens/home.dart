@@ -6,6 +6,7 @@ import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -47,8 +48,11 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SettingsPage(SharedPreferences.getInstance()))),
               color: Colors.white,
             ),
           ],
@@ -80,8 +84,7 @@ class _HomePageState extends State<HomePage> {
                         var client = new Client();
                         client.getOrders(_selectedMachine.id).then((orders) => {
                               setState(() {
-                                _orders =
-                                    orders;
+                                _orders = orders;
                               })
                             });
                       },
@@ -160,7 +163,9 @@ class _HomePageState extends State<HomePage> {
                   buildNavigationalButton(
                       "Order details", (context) => OrderDetailsPage()),
                   buildNavigationalButton(
-                      "Settings", (context) => SettingsPage()),
+                      "Settings",
+                      (context) =>
+                          SettingsPage(SharedPreferences.getInstance())),
                 ]),
           ),
         ));

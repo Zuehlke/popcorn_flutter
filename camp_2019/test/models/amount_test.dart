@@ -1,4 +1,4 @@
-import 'package:camp_2019/amount.dart';
+import 'package:camp_2019/models/amount.dart';
 import 'package:test/test.dart';
 
 void main() {
