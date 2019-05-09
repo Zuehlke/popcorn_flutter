@@ -1,27 +1,38 @@
+import 'package:camp_2019/api/client.dart';
 import 'package:camp_2019/models/amount.dart';
 import 'package:camp_2019/models/flavour.dart';
+import 'package:camp_2019/models/order_request.dart';
+import 'package:camp_2019/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class OrderCreatePage extends StatefulWidget {
+  String _machineId;
+
+  OrderCreatePage(this._machineId);
+
   @override
-  State<StatefulWidget> createState() => _OrderCreatePageState();
+  State<StatefulWidget> createState() => _OrderCreatePageState(_machineId);
 }
 
 class _OrderCreatePageState extends State<OrderCreatePage> {
-  Flavour _selectedFlavour = Flavour.Salty;
+  String _machineId;
+  Flavour _flavour = Flavour.Salty;
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _amountController = TextEditingController();
+
+  _OrderCreatePageState(this._machineId);
 
   RadioListTile<Flavour> createFlavourRadioButton(Flavour flavour) {
     var result = RadioListTile<Flavour>(
       title: Text(describeEnum(flavour)),
       value: flavour,
-      groupValue: _selectedFlavour,
+      groupValue: _flavour,
       onChanged: (Flavour value) {
         setState(() {
-          _selectedFlavour = value;
+          _flavour = value;
         });
       },
     );
@@ -45,6 +56,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
               TextFormField(
                 decoration: InputDecoration(labelText: 'Amount (in g)'),
                 keyboardType: TextInputType.number,
+                controller: _amountController,
                 validator: (String text) {
                   var num = int.tryParse(text);
                   if (num == null || Amount.isValid(num)) {
@@ -79,7 +91,9 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                     color: Colors.blue,
                     textColor: Colors.white,
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {}
+                      if (_formKey.currentState.validate()) {
+                        createOrder();
+                      }
                     },
                     child: Text('Submit Order'),
                   ),
@@ -90,5 +104,13 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
         ),
       ),
     );
+  }
+
+  void createOrder() {
+    UserNameRegistry().getCurrent().then((userName){
+      var amount = int.tryParse(_amountController.text) ?? 0;
+      var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
+      Client().createOrder(orderRequest);
+    });
   }
 }

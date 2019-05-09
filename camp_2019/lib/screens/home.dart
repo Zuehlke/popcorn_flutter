@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
               child: buildOrderList(),
             ),
           ),
-          buildNavigationalButton("Order Popcorn", (context) => OrderCreatePage()),
+          buildNavigationalButton("Order Popcorn", (context) => OrderCreatePage(_selectedMachine.id)),
         ]),
       ),
     );
