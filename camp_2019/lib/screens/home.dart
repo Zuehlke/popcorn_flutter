@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             widget.title,
             textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           automaticallyImplyLeading: true,
           centerTitle: true,
@@ -83,7 +84,10 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CircularProgressIndicator(),
-          Text("Fetching Your Machine")
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text("Preparing . . . "),
+          )
         ],
       ));
     }
@@ -177,7 +181,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CircularProgressIndicator(),
-          Text("Fetching Orders")
+          Text("Fetching Orders . . .")
         ],
       ));
     }
