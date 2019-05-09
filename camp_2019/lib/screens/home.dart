@@ -26,10 +26,17 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     var client = new Client();
-    client.getAllMachines().then((machines) => setState(() {
-          _machines = machines;
-          _selectedMachine = _machines[0];
-        }));
+    client
+        .getAllMachines()
+        .then((machines) => setState(() {
+              _machines = machines;
+              _selectedMachine = _machines[0];
+            }))
+        .then((t) => {
+              client.getOrders(_selectedMachine.id).then((newOrders) => {
+                    setState(() => {_orders = newOrders})
+                  })
+            });
   }
 
   @override
@@ -69,7 +76,14 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           // Machine dropdown
-
+          Align(
+          heightFactor: 1.5,
+          child: Text(
+            "Selected Machine",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          alignment: Alignment.bottomLeft,
+        ),
           Container(
             decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
             child: DropdownButton<String>(
@@ -127,26 +141,39 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                   border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide),
                   borderRadius: BorderRadius.all(Radius.circular(15))),
-              child: Scrollbar(
-                child: ListView.separated(
-                  padding: EdgeInsets.all(6),
-                  itemCount: _orders.length,
-                  separatorBuilder: (context, index) => Divider(),
-                  itemBuilder: (context, i) {
-                    var order = _orders[i];
-                    return Text(
-                      "${describeEnum(order.flavour)} for ${order.userName}",
-                      style: TextStyle(fontSize: 18),
-                    );
-                  },
-                ),
-              ),
+              child: buildOrderList(),
             ),
           ),
           buildNavigationalButton("Order", (context) => OrderCreatePage()),
           buildNavigationalButton("Order details", (context) => OrderDetailsPage()),
           buildNavigationalButton("Settings", (context) => SettingsPage()),
         ]),
+      ),
+    );
+  }
+
+  Widget buildOrderList() {
+    if (_orders.isEmpty) {
+      return Center(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[CircularProgressIndicator(), Text("Fetching Orders")],
+      ));
+    }
+
+    return Scrollbar(
+      child: ListView.separated(
+        padding: EdgeInsets.all(6),
+        itemCount: _orders.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, i) {
+          var order = _orders[i];
+          return Text(
+            "${describeEnum(order.flavour)} for ${order.userName}",
+            style: TextStyle(fontSize: 18),
+          );
+        },
       ),
     );
   }
