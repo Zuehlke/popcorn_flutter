@@ -5,8 +5,6 @@ import 'package:PopcornMaker/models/order_request.dart';
 import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class OrderCreatePage extends StatefulWidget {
@@ -20,21 +18,30 @@ class OrderCreatePage extends StatefulWidget {
 
 class _OrderCreatePageState extends State<OrderCreatePage> {
   String _machineId;
-  Flavour _flavour = Flavour.Salty;
+  Flavour _selectedFlavour = Flavour.Salty;
   bool _isBusy = false;
-  final _formKey = GlobalKey<FormState>();
+  var _servingSizes = {
+    "Small Serving": 1,
+    "Medium Serving": 2,
+    "Large Serving": 3,
+    "Avengers Serving": 4,
+  };
+  int _selectedServingSize;
+
   TextEditingController _amountController = TextEditingController();
 
-  _OrderCreatePageState(this._machineId);
+  _OrderCreatePageState(this._machineId) {
+    _selectedServingSize = _servingSizes.values.first;
+  }
 
   RadioListTile<Flavour> createFlavourRadioButton(Flavour flavour) {
     var result = RadioListTile<Flavour>(
       title: Text(describeEnum(flavour)),
       value: flavour,
-      groupValue: _flavour,
+      groupValue: _selectedFlavour,
       onChanged: (Flavour value) {
         setState(() {
-          _flavour = value;
+          _selectedFlavour = value;
         });
       },
     );
@@ -50,49 +57,39 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
-        child: Form(
-          autovalidate: true,
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Amount (in g)'),
-                keyboardType: TextInputType.number,
-                controller: _amountController,
-                validator: (String text) {
-                  var num = int.tryParse(text);
-                  if (num == null || Amount.isValid(num)) {
-                    return null;
-                  }
-
-                  return "Incorrect value (should be between ${Amount.minValue} and ${Amount.maxValue})";
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DropdownButton(
+                isExpanded: true,
+                value: _selectedServingSize,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedServingSize = value;
+                  });
                 },
+                items: _servingSizes.entries.map((entry) {
+                  return DropdownMenuItem<int>(
+                      value: entry.value, child: Text(entry.key));
+                }).toList()),
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Flavour"),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Flavour"),
-                ),
-              ),
-              createFlavourRadioButton(Flavour.Salty),
-              createFlavourRadioButton(Flavour.Sweet),
-              createFlavourRadioButton(Flavour.Caramel),
-              createFlavourRadioButton(Flavour.Wasabi),
-              RaisedButton(
-                color: Colors.purple,
-                textColor: Colors.white,
-                onPressed: _isBusy
-                    ? null
-                    : () {
-                        if (_formKey.currentState.validate()) {
-                          createOrder(context);
-                        }
-                      },
-                child: Text('Submit Order'),
-              ),
-            ],
-          ),
+            ),
+            createFlavourRadioButton(Flavour.Salty),
+            createFlavourRadioButton(Flavour.Sweet),
+            createFlavourRadioButton(Flavour.Caramel),
+            createFlavourRadioButton(Flavour.Wasabi),
+            RaisedButton(
+              color: Colors.purple,
+              textColor: Colors.white,
+              onPressed: _isBusy ? null : () => createOrder(context),
+              child: Text('Submit Order'),
+            ),
+          ],
         ),
       ),
     );
@@ -100,8 +97,8 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
 
   Future<void> createOrder(BuildContext context) async {
     var userName = await UserNameRegistry().getCurrent();
-    var amount = int.tryParse(_amountController.text) ?? 0;
-    var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
+    var orderRequest = OrderRequest(
+        _machineId, userName, _selectedServingSize, _selectedFlavour);
     try {
       setState(() {
         _isBusy = true;
