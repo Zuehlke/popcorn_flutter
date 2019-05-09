@@ -75,43 +75,7 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          // Machine dropdown
-          Align(
-          heightFactor: 1.5,
-          child: Text(
-            "Selected Machine",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          alignment: Alignment.bottomLeft,
-        ),
-          Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-            child: DropdownButton<String>(
-              isExpanded: true,
-              items: _machines.map((value) {
-                return DropdownMenuItem<String>(
-                  value: value.id,
-                  child: Align(
-                    child: Text(value.id, style: TextStyle(fontSize: 14)),
-                  ),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedMachine = _machines.firstWhere((value) => value.id == newValue);
-                });
-
-                var client = new Client();
-                client.getOrders(_selectedMachine.id).then((orders) => {
-                      setState(() {
-                        _orders = orders;
-                      })
-                    });
-              },
-              value: _selectedMachine.id,
-            ),
-          ),
-
+          
           // Machine status
           Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -144,9 +108,7 @@ class _HomePageState extends State<HomePage> {
               child: buildOrderList(),
             ),
           ),
-          buildNavigationalButton("Order", (context) => OrderCreatePage()),
-          buildNavigationalButton("Order details", (context) => OrderDetailsPage()),
-          buildNavigationalButton("Settings", (context) => SettingsPage()),
+          buildNavigationalButton("Order Popcorn", (context) => OrderCreatePage()),
         ]),
       ),
     );
@@ -180,7 +142,8 @@ class _HomePageState extends State<HomePage> {
 
   RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
-      child: Text(buttonText),
+      child: Text(buttonText, style: TextStyle(color: Colors.white),),
+      color: Colors.purple,
       onPressed: () {
         Navigator.push(
           context,
