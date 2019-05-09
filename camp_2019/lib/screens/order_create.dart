@@ -79,29 +79,17 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
               createFlavourRadioButton(Flavour.Sweet),
               createFlavourRadioButton(Flavour.Caramel),
               createFlavourRadioButton(Flavour.Wasabi),
-              DateTimePickerFormField(
-                format: DateFormat("dd.MM.yyyy HH:mm"),
-                inputType: InputType.both,
-                decoration: InputDecoration(hintText: "PickupTime"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(15),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: _isBusy
-                        ? null
-                        : () {
-                            if (_formKey.currentState.validate()) {
-                              createOrder(context);
-                            }
-                          },
-                    child: Text('Submit Order'),
-                  ),
-                ),
+              RaisedButton(
+                color: Colors.purple,
+                textColor: Colors.white,
+                onPressed: _isBusy
+                    ? null
+                    : () {
+                        if (_formKey.currentState.validate()) {
+                          createOrder(context);
+                        }
+                      },
+                child: Text('Submit Order'),
               ),
             ],
           ),
