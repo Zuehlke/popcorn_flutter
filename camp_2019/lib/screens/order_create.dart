@@ -93,7 +93,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                     textColor: Colors.white,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        createOrder();
+                        createOrder(context);
                       }
                     },
                     child: Text('Submit Order'),
@@ -107,19 +107,21 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
     );
   }
 
-  Future<void> createOrder() async {
+  Future<void> createOrder(BuildContext context) async {
     var userName = await UserNameRegistry().getCurrent();
     var amount = int.tryParse(_amountController.text) ?? 0;
     var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
     try {
       await Client().createOrder(orderRequest);
-      navigateBack();
+      navigateBack(context);
     } catch (ex) {
       showErrorToast();
     }
   }
 
-  void navigateBack() {}
+  void navigateBack(BuildContext context) {
+    Navigator.pop(context);
+  }
 
   void showErrorToast() {
     Fluttertoast.showToast(
