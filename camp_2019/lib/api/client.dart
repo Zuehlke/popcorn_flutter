@@ -68,16 +68,30 @@ class Client {
     var url = "$_baseUrl/machines/${machineId}/orders/${orderId}";
     var body = json.encode(requestJson);
     var response = await _put(url, body);
+    throwOnError(response);
+  }
+
+  Future<http.Response> _get(String url) async {
+    var response = await http.get(url, headers: _headers);
+    throwOnError(response);
+    return response;
+  }
+
+  Future<http.Response> _post(String url, dynamic body) async{
+    var response = await http.post(url, body: body, headers: _headers);
+    throwOnError(response);
+    return response;
+  }
+
+  Future<http.Response> _put(String url, dynamic body) async {
+    var response = await http.put(url, body: body, headers: _headers);
+    throwOnError(response);
+    return response;
+  }
+
+  void throwOnError(http.Response response) {
     if (response.statusCode != 200) {
       throw response.reasonPhrase;
     }
   }
-
-  Future<http.Response> _get(String url) => http.get(url, headers: _headers);
-
-  Future<http.Response> _post(String url, dynamic body) =>
-      http.post(url, body: body, headers: _headers);
-
-  Future<http.Response> _put(String url, dynamic body) =>
-      http.put(url, body: body, headers: _headers);
 }
