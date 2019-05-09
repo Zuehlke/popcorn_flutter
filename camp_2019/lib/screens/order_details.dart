@@ -11,8 +11,6 @@ class OrderDetailsPage extends StatelessWidget {
     _items.add(OrderDetailsItem("Amount (g)", order.amount.toString()));
     _items.add(OrderDetailsItem("Flavour", describeEnum(order.flavour)));
     _items.add(OrderDetailsItem("Status", describeEnum(order.status)));
-    _items.add(OrderDetailsItem("Pickup Time",
-        new DateFormat("dd.MM.yyyy HH:mm").format(order.pickupTime)));
   }
 
   @override
