@@ -4,12 +4,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Popcorn Maker App', () {
-    // First, define the Finders. We can use these to locate Widgets from the
-    // test suite. Note: the Strings provided to the `byValueKey` method must
-    // be the same as the Strings we used for the Keys in step 1.
-    final counterTextFinder = find.byValueKey('counter');
-    final buttonFinder = find.byValueKey('increment');
-
     FlutterDriver driver;
 
     // Connect to the Flutter driver before running any tests
@@ -25,19 +19,17 @@ void main() {
     });
 
     test('navigates', () async {
-      final buttonFinder = find.byValueKey('Order');
+      final buttonFinder = find.byValueKey('OrderPopcorn');
       driver.tap(buttonFinder);
 
-      final submitButtoFinder = find.byValueKey('submit');
-      await driver.waitFor(submitButtoFinder);
+      final submitButtonFinder = find.byValueKey('submit');
+      await driver.waitFor(submitButtonFinder);
+
+      final amountInputBox = find.byValueKey('Amount');
+      await driver.tap(amountInputBox);
+      await driver.enterText('1');
+
+      await driver.tap(submitButtonFinder);
     });
-
-    // test('increments the counter', () async {
-    //   // First, tap on the button
-    //   await driver.tap(buttonFinder);
-
-    //   // Then, verify the counter text has been incremented by 1
-    //   expect(await driver.getText(counterTextFinder), "1");
-    // });
   });
 }
