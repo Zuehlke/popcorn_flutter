@@ -1,4 +1,4 @@
-import 'package:camp_2019/models/flavour.dart';
+import 'package:PopcornMaker/models/flavour.dart';
 
 class OrderRequest{
   String machineId;

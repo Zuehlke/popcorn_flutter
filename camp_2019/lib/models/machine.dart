@@ -1,6 +1,6 @@
-import 'package:camp_2019/models/flavour.dart';
-import 'package:camp_2019/models/level.dart';
-import 'package:camp_2019/models/machine_status.dart';
+import 'package:PopcornMaker/models/flavour.dart';
+import 'package:PopcornMaker/models/level.dart';
+import 'package:PopcornMaker/models/machine_status.dart';
 
 class Machine {
   String id;

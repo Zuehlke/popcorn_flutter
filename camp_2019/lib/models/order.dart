@@ -1,7 +1,7 @@
 
-import 'package:camp_2019/models/flavour.dart';
-import 'package:camp_2019/models/order_status.dart';
-import 'package:camp_2019/utils/utils.dart';
+import 'package:PopcornMaker/models/flavour.dart';
+import 'package:PopcornMaker/models/order_status.dart';
+import 'package:PopcornMaker/utils/utils.dart';
 
 class Order {
   Order(this.id, this.machineId, this.userName, this.amount, this.flavour, this.status, this.pickupTime);
