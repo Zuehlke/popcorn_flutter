@@ -15,7 +15,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   List<OrderDetailsItem> _items;
 
   _OrderDetailsPageState() {
-    _order = new Order(
+    _order = new Order("whatever", "wahetever",
         'Hans', 5, Flavour.Sweet, OrderStatus.InProgress, DateTime.now());
 
     _items = [

@@ -1,5 +1,6 @@
 import 'package:camp_2019/api/client.dart';
 import 'package:camp_2019/models/machine.dart';
+import 'package:camp_2019/models/order.dart';
 import 'package:camp_2019/screens/order_create.dart';
 import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
@@ -12,15 +13,13 @@ class HomePage extends StatefulWidget {
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState(List<String>.generate(20, (it) => "01"));
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   var _machines = new List<Machine>();
   Machine _selectedMachine;
-  List<String> _orders;
-
-  _HomePageState(this._orders) : super();
+  var _orders = new List<Order>();
 
   @override
   void initState() {
@@ -72,11 +71,20 @@ class _HomePageState extends State<HomePage> {
                           child: Text(value.id),
                         );
                       }).toList(),
-                      onChanged: (newValue) => {
-                            setState(() {
-                              _selectedMachine = _machines.firstWhere((value) => value.id == newValue);
-                            })
-                          },
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedMachine = _machines
+                              .firstWhere((value) => value.id == newValue);
+                        });
+
+                        var client = new Client();
+                        client.getOrders(_selectedMachine.id).then((orders) => {
+                              setState(() {
+                                _orders =
+                                    orders;
+                              })
+                            });
+                      },
                       value: _selectedMachine.id,
                     ),
                   ),
@@ -94,12 +102,19 @@ class _HomePageState extends State<HomePage> {
                           right: borderSide,
                           horizontalInside: borderSide),
                       children: [
-                        TableRow(
-                            children: [Text("Machine State"), Text(describeEnum(_selectedMachine.status))]),
-                        TableRow(children: [Text("Corn Level"), Text(_selectedMachine.level.toString())]),
+                        TableRow(children: [
+                          Text("Machine State"),
+                          Text(describeEnum(_selectedMachine.status))
+                        ]),
+                        TableRow(children: [
+                          Text("Corn Level"),
+                          Text(_selectedMachine.level.toString())
+                        ]),
                         TableRow(children: [
                           Text("Flavours"),
-                          Text(_selectedMachine.flavours.map(describeEnum).join(","))
+                          Text(_selectedMachine.flavours
+                              .map(describeEnum)
+                              .join(","))
                         ])
                       ],
                     ),
@@ -130,8 +145,9 @@ class _HomePageState extends State<HomePage> {
                           itemCount: _orders.length,
                           separatorBuilder: (context, index) => Divider(),
                           itemBuilder: (context, i) {
+                            var order = _orders[i];
                             return Text(
-                              _orders[i],
+                              "${describeEnum(order.flavour)} for ${order.userName}",
                               style: TextStyle(fontSize: 18),
                             );
                           },

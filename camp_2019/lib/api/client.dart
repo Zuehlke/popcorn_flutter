@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:camp_2019/models/machine.dart';
+import 'package:camp_2019/models/order.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
@@ -28,26 +30,10 @@ class Client {
     return parseMachine(json.decode(response.body));
   }
 
-  /*
-
-   "id": "E63D8231-CDAA-44E2-8B7F-A388EF2BAB53",
-  "status": "IDLE",
-  "cornLevel": 87,
-  "flavours": [
-    {
-      "name": "SWEET",
-      "level": 42
-    },
-    {
-      "name": "CARAMEL",
-      "level": 99
-    },
-    {
-      "name": "WASABI",
-      "level": 1
-    }
-
-   */
+  Future<List<Order>> getOrders(String machineId) async {
+    var response = await _get("$_baseUrl/machines/$machineId/orders");
+    return parseOrders(json.decode(response.body));
+  }
 
   Future<http.Response> _get(String url) async => await http.get(url, headers: _headers);
 
