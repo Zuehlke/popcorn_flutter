@@ -1,5 +1,5 @@
 import 'package:flutter_driver/driver_extension.dart';
-import 'package:camp_2019/main.dart' as app;
+import 'package:PopcornMaker/main.dart' as app;
 
 void main() {
   // This line enables the extension

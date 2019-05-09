@@ -1,4 +1,4 @@
-import 'package:camp_2019/models/amount.dart';
+import 'package:PopcornMaker/models/amount.dart';
 import 'package:test/test.dart';
 
 void main() {

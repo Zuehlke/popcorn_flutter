@@ -5,6 +5,7 @@ import 'package:PopcornMaker/models/order.dart';
 import 'package:PopcornMaker/screens/order_create.dart';
 import 'package:PopcornMaker/screens/order_details.dart';
 import 'package:PopcornMaker/screens/settings.dart';
+import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
