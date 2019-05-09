@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:PopcornMaker/api/client.dart';
 import 'package:PopcornMaker/models/machine.dart';
 import 'package:PopcornMaker/models/order.dart';
@@ -6,6 +7,7 @@ import 'package:PopcornMaker/screens/order_details.dart';
 import 'package:PopcornMaker/screens/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -27,23 +29,32 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    var client = new Client();
-    client
+    Client()
         .getAllMachines()
         .then((machines) => setState(() {
               _machines = machines;
               _selectedMachine = _machines[0];
             }))
-        .then((t) => {
-              client.getOrders(_selectedMachine.id).then((newOrders) => {
-                    setState(() => {_orders = newOrders})
-                  })
-            });
+        .then((t) => refreshOrders());
+
+    Observable.periodic(Duration(seconds: 5))
+    .listen((_) => refreshOrders());
+  }
+
+  Future<void> refreshOrders() {
+    if (_selectedMachine == null) {
+      return Completer().future;
+    }
+
+    return Client().getOrders(_selectedMachine.id).then((newOrders) => {
+          setState(() => {_orders = newOrders})
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    final borderSide = BorderSide(color: Colors.grey, width: 1.0, style: BorderStyle.solid);
+    final borderSide =
+        BorderSide(color: Colors.grey, width: 1.0, style: BorderStyle.solid);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -55,7 +66,8 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage())),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage())),
               color: Colors.white,
             ),
           ],
@@ -69,7 +81,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[CircularProgressIndicator(), Text("Fetching Your Machine")],
+        children: <Widget>[
+          CircularProgressIndicator(),
+          Text("Fetching Your Machine")
+        ],
       ));
     }
 
@@ -78,12 +93,19 @@ class _HomePageState extends State<HomePage> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(defaultPadding),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           // Machine status
           Container(
             padding: EdgeInsets.all(defaultPadding),
             decoration: BoxDecoration(
-                border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide), borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
+                border: Border(
+                    top: borderSide,
+                    right: borderSide,
+                    left: borderSide,
+                    bottom: borderSide),
+                borderRadius:
+                    BorderRadius.all(Radius.circular(defaultCornerRadius))),
             child: Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               border: TableBorder(horizontalInside: borderSide),
@@ -92,21 +114,25 @@ class _HomePageState extends State<HomePage> {
                   Text("Machine State"),
                   Padding(
                     padding: const EdgeInsets.all(defaultPadding),
-                    child: Text(describeEnum(_selectedMachine.status), style: smallTextStyle),
+                    child: Text(describeEnum(_selectedMachine.status),
+                        style: smallTextStyle),
                   )
                 ]),
                 TableRow(children: [
                   Text("Corn Level"),
                   Padding(
                     padding: const EdgeInsets.all(defaultPadding),
-                    child: Text(_selectedMachine.level.toString(), style: smallTextStyle),
+                    child: Text(_selectedMachine.level.toString(),
+                        style: smallTextStyle),
                   )
                 ]),
                 TableRow(children: [
                   Text("Flavours"),
                   Padding(
                     padding: const EdgeInsets.all(defaultPadding),
-                    child: Text(_selectedMachine.flavours.map(describeEnum).join(","), style: smallTextStyle),
+                    child: Text(
+                        _selectedMachine.flavours.map(describeEnum).join(","),
+                        style: smallTextStyle),
                   )
                 ])
               ],
@@ -126,12 +152,18 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               padding: EdgeInsets.all(3),
               decoration: BoxDecoration(
-                  border: Border(top: borderSide, right: borderSide, left: borderSide, bottom: borderSide),
-                  borderRadius: BorderRadius.all(Radius.circular(defaultCornerRadius))),
+                  border: Border(
+                      top: borderSide,
+                      right: borderSide,
+                      left: borderSide,
+                      bottom: borderSide),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(defaultCornerRadius))),
               child: buildOrderList(),
             ),
           ),
-          buildNavigationalButton("Order Popcorn", (context) => OrderCreatePage(_selectedMachine.id)),
+          buildNavigationalButton("Order Popcorn",
+              (context) => OrderCreatePage(_selectedMachine.id)),
         ]),
       ),
     );
@@ -143,7 +175,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[CircularProgressIndicator(), Text("Fetching Orders")],
+        children: <Widget>[
+          CircularProgressIndicator(),
+          Text("Fetching Orders")
+        ],
       ));
     }
 
@@ -171,7 +206,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  RaisedButton buildNavigationalButton(String buttonText, StatefulWidget destinationBuilder(BuildContext context)) {
+  RaisedButton buildNavigationalButton(String buttonText,
+      StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
       child: Text(
         buttonText,
