@@ -1,10 +1,14 @@
 import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
+  final UserNameRegistry _userNameRegistry;
+
+  SettingsPage(this._userNameRegistry);
+
   @override
-  _SettingsPageState createState() => _SettingsPageState(UserNameRegistry());
+  _SettingsPageState createState() =>
+      _SettingsPageState(this._userNameRegistry);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -18,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
 
     _userNameRegistry.getCurrent().then((value) {
-        _userNameController.text = value;
+      _userNameController.text = value;
     });
   }
 

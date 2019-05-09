@@ -9,7 +9,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class OrderCreatePage extends StatefulWidget {
-  String _machineId;
+  final String _machineId;
 
   OrderCreatePage(this._machineId);
 
@@ -55,6 +55,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
             children: [
               TextFormField(
                 decoration: InputDecoration(labelText: 'Amount (in g)'),
+                key: Key('Amount'),
                 keyboardType: TextInputType.number,
                 controller: _amountController,
                 validator: (String text) {
@@ -87,6 +88,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                 child: SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
+                    key: Key('submit'),
                     padding: EdgeInsets.all(15),
                     color: Colors.blue,
                     textColor: Colors.white,
@@ -107,7 +109,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
   }
 
   void createOrder() {
-    UserNameRegistry().getCurrent().then((userName){
+    UserNameRegistry().getCurrent().then((userName) {
       var amount = int.tryParse(_amountController.text) ?? 0;
       var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
       Client().createOrder(orderRequest);
