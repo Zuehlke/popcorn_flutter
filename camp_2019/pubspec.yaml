@@ -28,6 +28,7 @@ dependencies:
   fluttertoast: ^3.0.4
 
   datetime_picker_formfield: 0.1.8
+  rxdart: ^0.22.0
 
 dev_dependencies:
   flutter_test:

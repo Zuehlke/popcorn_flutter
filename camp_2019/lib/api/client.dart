@@ -8,6 +8,15 @@ import 'package:camp_2019/models/order_request.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
+
+  static final Client _instance = Client._internal();
+
+  factory Client(){
+    return _instance;
+  }
+
+  Client._internal();
+
   final _baseUrl =
       'https://popcornmakerbackend20190507022416.azurewebsites.net/api';
   final _headers = {'Content-Type': 'application/json'};
