@@ -55,6 +55,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
             children: [
               TextFormField(
                 decoration: InputDecoration(labelText: 'Amount (in g)'),
+                key: Key('Amount'),
                 keyboardType: TextInputType.number,
                 controller: _amountController,
                 validator: (String text) {
@@ -108,7 +109,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
   }
 
   void createOrder() {
-    UserNameRegistry().getCurrent().then((userName){
+    UserNameRegistry().getCurrent().then((userName) {
       var amount = int.tryParse(_amountController.text) ?? 0;
       var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
       Client().createOrder(orderRequest);

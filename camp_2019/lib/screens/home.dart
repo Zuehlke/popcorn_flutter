@@ -203,6 +203,7 @@ class _HomePageState extends State<HomePage> {
   RaisedButton buildNavigationalButton(String buttonText,
       StatefulWidget destinationBuilder(BuildContext context)) {
     return RaisedButton(
+      key: Key(buttonText.replaceAll(' ', '')),
       child: Text(
         buttonText,
         style: TextStyle(color: Colors.white),
