@@ -1,4 +1,4 @@
-import 'package:camp_2019/models/order.dart';
+import 'package:PopcornMaker/models/order.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
