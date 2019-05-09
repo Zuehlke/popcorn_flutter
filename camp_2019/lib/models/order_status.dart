@@ -1,4 +1,4 @@
-enum OrderStatus { InQueue, InProgress }
+enum OrderStatus { Undefined, InQueue, InProgress, Complete }
 
 OrderStatus parseOrderStatus(String status) {
   switch (status) {
@@ -6,7 +6,9 @@ OrderStatus parseOrderStatus(String status) {
       return OrderStatus.InQueue;
     case 'IN_PROGRESS':
       return OrderStatus.InProgress;
+    case "COMPLETE":
+      return OrderStatus.Complete;
   }
 
-  throw status;
+  return OrderStatus.Undefined;
 }
