@@ -1,23 +1,24 @@
+import 'package:camp_2019/user_name_registry.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _SettingsPageState createState() => _SettingsPageState(UserNameRegistry());
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final _userNamePrefKey = "userName";
-  TextEditingController _usernameController = TextEditingController();
+  UserNameRegistry _userNameRegistry;
+  TextEditingController _userNameController = TextEditingController();
+
+  _SettingsPageState(this._userNameRegistry);
 
   @override
   void initState() {
     super.initState();
 
-    SharedPreferences.getInstance().then((preferences) {
-      if (preferences.containsKey(_userNamePrefKey)) {
-        _usernameController.text = preferences.get(_userNamePrefKey);
-      }
+    _userNameRegistry.getCurrent().then((value) {
+        _userNameController.text = value;
     });
   }
 
@@ -36,11 +37,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           "name"),
                   maxLines: 1,
                   onChanged: (newText) {
-                    SharedPreferences.getInstance().then((preferences) {
-                      preferences.setString(_userNamePrefKey, newText);
-                    });
+                    _userNameRegistry.setCurrent(newText);
                   },
-                  controller: _usernameController,
+                  controller: _userNameController,
                 )
               ],
             )));

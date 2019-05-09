@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   buildNavigationalButton(
-                      "Order", (context) => OrderCreatePage()),
+                      "Order", (context) => OrderCreatePage(_selectedMachine.id)),
                   buildNavigationalButton(
                       "Order details", (context) => OrderDetailsPage()),
                   buildNavigationalButton(

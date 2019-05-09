@@ -21,7 +21,8 @@ Order parseOrder(dynamic json) {
   var userName = json['userName'];
   var amount = json['amount'];
   var flavour = parseFlavour(json['flavour']);
-  var pickupTime = json['pickupTime'];
+  //var pickupTime = json['pickupTime'];
+  var pickupTime = DateTime.now(); //TODO: fix date time parsing
   var status = parseOrderStatus(json['status']);
 
   return Order(id, machineId, userName, amount, flavour, status, pickupTime);
