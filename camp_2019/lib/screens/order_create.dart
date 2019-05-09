@@ -21,6 +21,7 @@ class OrderCreatePage extends StatefulWidget {
 class _OrderCreatePageState extends State<OrderCreatePage> {
   String _machineId;
   Flavour _flavour = Flavour.Salty;
+  bool _isBusy = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _amountController = TextEditingController();
 
@@ -91,11 +92,13 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                     padding: EdgeInsets.all(15),
                     color: Colors.blue,
                     textColor: Colors.white,
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        createOrder(context);
-                      }
-                    },
+                    onPressed: _isBusy
+                        ? null
+                        : () {
+                            if (_formKey.currentState.validate()) {
+                              createOrder(context);
+                            }
+                          },
                     child: Text('Submit Order'),
                   ),
                 ),
@@ -112,10 +115,17 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
     var amount = int.tryParse(_amountController.text) ?? 0;
     var orderRequest = OrderRequest(_machineId, userName, amount, _flavour);
     try {
+      setState(() {
+        _isBusy = true;
+      });
       await Client().createOrder(orderRequest);
       navigateBack(context);
     } catch (ex) {
       showErrorToast();
+    } finally {
+      setState(() {
+        _isBusy = false;
+      });
     }
   }
 
