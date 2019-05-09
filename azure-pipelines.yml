@@ -19,7 +19,7 @@ jobs:
         inputs:
           script: "flutter analyze"
           workingDirectory: $(projectDirectory)
-          failOnStderr: true
+          failOnStderr: false
       - task: CopyFiles@2
         inputs:
           contents: "**/*.apk"
