@@ -2,7 +2,6 @@ import 'package:camp_2019/api/client.dart';
 import 'package:camp_2019/models/machine.dart';
 import 'package:camp_2019/models/order.dart';
 import 'package:camp_2019/screens/order_create.dart';
-import 'package:camp_2019/screens/order_details.dart';
 import 'package:camp_2019/screens/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
