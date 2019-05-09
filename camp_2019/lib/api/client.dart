@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:camp_2019/models/flavour.dart';
 import 'package:camp_2019/models/machine.dart';
 import 'package:camp_2019/models/order.dart';
+import 'package:camp_2019/models/order_request.dart';
 import 'package:http/http.dart' as http;
 
 class Client {
@@ -35,6 +37,20 @@ class Client {
     return parseOrders(json.decode(response.body));
   }
 
-  Future<http.Response> _get(String url) async => await http.get(url, headers: _headers);
+  Future<String> createOrder(OrderRequest orderRequest) async {
+    var request = {
+      "userName": orderRequest.userName,
+      "amount": orderRequest.amount,
+      "flavour": fromFlavour(orderRequest.flavour),
+    };
 
+    var body = json.encode(request);
+    var response = await _post("$_baseUrl/machines/${orderRequest.machineId}/orders/", body);
+    var responseJson = json.decode(response.body);
+    return responseJson['id'];
+  }
+
+  Future<http.Response> _get(String url) => http.get(url, headers: _headers);
+
+  Future<http.Response> _post(String url, dynamic body) => http.post(url, body: body, headers: _headers);
 }

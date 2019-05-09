@@ -1,18 +1,18 @@
 enum Flavour { Salty, Sweet, Caramel, Wasabi }
 
-Flavour parseFlavour(String flavour) {
-  switch (flavour) {
-    case 'SALTY':
-      return Flavour.Salty;
-    case 'SWEET':
-      return Flavour.Sweet;
-    case 'CARAMEL':
-      return Flavour.Caramel;
-    case 'WASABI':
-      return Flavour.Wasabi;
-  }
+var _model2Dto = {
+  "SALTY": Flavour.Salty,
+  "SWEET": Flavour.Sweet,
+  "CARAMEL": Flavour.Caramel,
+  "WASABI": Flavour.Wasabi,
+};
 
-  throw flavour;
+Flavour parseFlavour(String flavour) {
+  return _model2Dto[flavour];
+}
+
+String fromFlavour(Flavour flavour) {
+  return _model2Dto.keys.firstWhere((key) => _model2Dto[key] == flavour);
 }
 
 List<Flavour> parseFlavours(List<dynamic> flavours) {
