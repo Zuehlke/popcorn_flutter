@@ -8,7 +8,7 @@ class OrderDetailsPage extends StatelessWidget {
 
   OrderDetailsPage(Order order) {
     _items.add(OrderDetailsItem("Name", order.userName));
-    _items.add(OrderDetailsItem("Amount (g)", order.amount.toString()));
+    _items.add(OrderDetailsItem("Serving Size", describeEnum(order.size)));
     _items.add(OrderDetailsItem("Flavour", describeEnum(order.flavour)));
     _items.add(OrderDetailsItem("Status", describeEnum(order.status)));
   }
