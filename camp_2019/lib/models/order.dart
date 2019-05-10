@@ -5,7 +5,7 @@ import 'package:PopcornMaker/models/serving_size.dart';
 import 'package:PopcornMaker/utils/utils.dart';
 
 class Order {
-  Order(this.id, this.machineId, this.userName, this.size, this.flavour, this.status, this.pickupTime);
+  Order(this.id, this.machineId, this.userName, this.size, this.flavour, this.status, this.pickupTime, this.creationDate);
 
   String id;
   String machineId;
@@ -14,6 +14,7 @@ class Order {
   Flavour flavour;
   OrderStatus status;
   DateTime pickupTime;
+  DateTime creationDate;
 }
 
 
@@ -25,8 +26,9 @@ Order parseOrder(dynamic json) {
   var flavour = parseFlavour(json['flavour']);
   var pickupTime = Utils.parseDateTime(json['pickupTime']);
   var status = parseOrderStatus(json['status']);
+  var creationDate = Utils.parseDateTime(json['creationDate']);
 
-  return Order(id, machineId, userName, size, flavour, status, pickupTime);
+  return Order(id, machineId, userName, size, flavour, status, pickupTime, creationDate);
 }
 
 List<Order> parseOrders(List<dynamic> jsons) {

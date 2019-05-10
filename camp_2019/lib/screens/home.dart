@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:PopcornMaker/api/client.dart';
 import 'package:PopcornMaker/models/machine.dart';
 import 'package:PopcornMaker/models/order.dart';
+import 'package:PopcornMaker/models/order_status.dart';
 import 'package:PopcornMaker/screens/order_create.dart';
 import 'package:PopcornMaker/screens/order_details.dart';
 import 'package:PopcornMaker/screens/settings.dart';
@@ -196,6 +197,24 @@ class _HomePageState extends State<HomePage> {
         itemCount: _orders.length,
         itemBuilder: (context, i) {
           var order = _orders[i];
+          IconData icon;
+          switch (order.status) {
+            case OrderStatus.Undefined:
+              icon = Icons.highlight_off;
+              break;
+            case OrderStatus.InQueue:
+              icon = Icons.access_time;
+              break;
+            case OrderStatus.InProgress:
+              icon = Icons.autorenew;
+              break;
+            case OrderStatus.Complete:
+              icon = Icons.check_circle_outline;
+              break;
+            case OrderStatus.AwaitingPayment:
+              icon = Icons.monetization_on;
+              break;
+          }
           return Card(
             child: ListTile(
               onTap: () => Navigator.push(
@@ -206,6 +225,7 @@ class _HomePageState extends State<HomePage> {
                 image: AssetImage('assets/popcorn_purple.png'),
                 height: 40,
               ),
+              trailing: Icon(icon),
               title: Text(
                 "${describeEnum(order.flavour)} popcorn for ${order.userName}",
                 style: smallTextStyle,
