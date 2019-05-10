@@ -100,12 +100,16 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
       setState(() {
         _isBusy = true;
       });
+
+      // Show modal loading indicator
+      showModalLoading();
       await Client().createOrder(orderRequest);
       navigateBack(context);
     } catch (ex) {
       showErrorToast();
     } finally {
       setState(() {
+        hideModalLoading();
         _isBusy = false;
       });
     }
@@ -128,7 +132,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
 
   void handleMissingUsername() {
     // flutter defined function
-    showDialog(
+    var t = showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -136,7 +140,6 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
           title: new Text("No Username"),
           content: new Text("You didn't choose a user name. Do you want to choose one?"),
           actions: <Widget>[
-
             // YES
             new FlatButton(
               child: new Text("Yes"),
@@ -157,5 +160,30 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
         );
       },
     );
+  }
+
+  void showModalLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: new Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Loading"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void hideModalLoading() {
+    Navigator.pop(context);
   }
 }
