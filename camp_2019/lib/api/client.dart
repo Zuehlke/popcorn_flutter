@@ -45,7 +45,9 @@ class Client {
 
   Future<List<Order>> getOrders(String machineId) async {
     var response = await _get("$_baseUrl/machines/$machineId/orders");
-    return parseOrders(json.decode(response.body));
+    List<Order> orders = parseOrders(json.decode(response.body));
+    orders.sort((a, b) => b.creationDate.compareTo(a.creationDate));
+    return orders;
   }
 
   Future<void> createOrder(OrderRequest orderRequest) async {
