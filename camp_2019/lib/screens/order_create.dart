@@ -2,6 +2,7 @@ import 'package:PopcornMaker/api/client.dart';
 import 'package:PopcornMaker/models/flavour.dart';
 import 'package:PopcornMaker/models/order_request.dart';
 import 'package:PopcornMaker/models/serving_size.dart';
+import 'package:PopcornMaker/screens/settings.dart';
 import 'package:PopcornMaker/user_name_registry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +62,7 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
                   });
                 },
                 items: ServingSize.values.map((entry) {
-                  return DropdownMenuItem<ServingSize>(
-                      value: entry, child: Text(describeEnum(entry)));
+                  return DropdownMenuItem<ServingSize>(value: entry, child: Text(describeEnum(entry)));
                 }).toList()),
             Padding(
               padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
@@ -89,18 +89,27 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
 
   Future<void> createOrder(BuildContext context) async {
     var userName = await UserNameRegistry().getCurrent();
-    var orderRequest = OrderRequest(
-        _machineId, userName, _selectedServingSize, _selectedFlavour);
+
+    if (userName == null || userName.isEmpty) {
+      handleMissingUsername();
+      return;
+    }
+
+    var orderRequest = OrderRequest(_machineId, userName, _selectedServingSize, _selectedFlavour);
     try {
       setState(() {
         _isBusy = true;
       });
+
+      // Show modal loading indicator
+      showModalLoading();
       await Client().createOrder(orderRequest);
       navigateBack(context);
     } catch (ex) {
       showErrorToast();
     } finally {
       setState(() {
+        hideModalLoading();
         _isBusy = false;
       });
     }
@@ -119,5 +128,62 @@ class _OrderCreatePageState extends State<OrderCreatePage> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);
+  }
+
+  void handleMissingUsername() {
+    // flutter defined function
+    var t = showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("No Username"),
+          content: new Text("You didn't choose a user name. Do you want to choose one?"),
+          actions: <Widget>[
+            // YES
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (ctx) => SettingsPage(UserNameRegistry())));
+              },
+            ),
+
+            // No
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showModalLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: new Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              new CircularProgressIndicator(),
+              new Text("Loading"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void hideModalLoading() {
+    Navigator.pop(context);
   }
 }
