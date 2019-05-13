@@ -99,4 +99,12 @@ class Client {
       throw response.reasonPhrase;
     }
   }
+
+  Future<String> getPayLink(Order order) async {
+    var url = "http://159.69.212.159:3000/invoice";
+    var body = {'orderId': order.id,'machineId': order.machineId};
+    var response = await _post(url, json.encode(body));
+    var responseJson = json.decode(response.body);
+    return responseJson['payment_request'];
+  }
 }
